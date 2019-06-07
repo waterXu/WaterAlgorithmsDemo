@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "Easy.h"
 static int s_fatal_signals[] = {
     SIGABRT,
     SIGBUS,
@@ -47,6 +48,9 @@ void InitCrashReport()
 
 
 int main(int argc, char * argv[]) {
+//    @autoreleasepool {
+//        Easy *easy = [[Easy alloc] init];
+//    }
     @autoreleasepool {
         InitCrashReport();
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));

@@ -1,17 +1,17 @@
 //
-//  Esay.m
+//  Easy.m
 //  WaterAlgorithmsDemo
 //
 //  Created by xuyanlan on 2019/5/8.
 //  Copyright © 2019年 xuyanlan. All rights reserved.
 //
 
-#import "Esay.h"
+#import "Easy.h"
 #import "TreeNode.h"
 #import <objc/runtime.h>
 #import "Medium.h"
 
-@implementation Esay
+@implementation Easy
 //测试类方法转发机制。
 + (BOOL)resolveClassMethod:(SEL)sel {
     NSString *selString = NSStringFromSelector(sel);
@@ -53,7 +53,7 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation {
     NSLog(@"---> %s",__FUNCTION__); //不实现就不会报 doesNotRecognizeSelector
 //    [anInvocation invoke];
-    [Esay repleaceFunc];
+    [Easy repleaceFunc];
 }
 
 + (void)repleaceFunc{
@@ -219,6 +219,64 @@
     }
     NSLog(@"---> %s, findSame = %d",__FUNCTION__,findSame);
 }
+//Symbol       Value
+//I             1
+//V             5
+//X             10
+//L             50
+//C             100
+//D             500
+//M             1000
+
+//例如，两个用罗马数字写成II，只有两个加在一起。十二写为XII，简称为X + II。第二十七号写成XXVII，即XX + V + II。
+//
+//罗马数字通常从左到右从最大到最小。但是，四个数字不是IIII。相反，第四个写为IV。因为一个在五个之前，我们减去四个。同样的原则适用于九号，即九号。有六个使用减法的实例：
+//
+//我可以放在V（5）和X（10）之前制作4和9。
+//X可以放在L（50）和C（100）之前，以产生40和90。
+//C可以放在D（500）和M（1000）之前，以产生400和900。
++ (void)romanToInteger {
+    NSDictionary *romanInt = @{
+                               @"I":@1,
+                               @"V":@5,
+                               @"X":@10,
+                               @"L":@50,
+                               @"C":@100,
+                               @"D":@500,
+                               @"M":@1000
+                               };
+    NSString *roman = @"MCMXCIV";
+    NSInteger count = [self romanToInteger:roman romanToIntDict:romanInt];
+    NSLog(@"---> %s, %@ = %ld",__FUNCTION__,roman,count);
+}
+
++ (NSInteger)romanToInteger:(NSString *)roman romanToIntDict:(NSDictionary *)dict {
+    NSInteger result = 0;
+    for(int i = ((int)roman.length - 1); i >= 0; i--) {
+        NSString *current = [roman substringWithRange:NSMakeRange(i, 1)];
+        if([dict.allKeys containsObject:current]) {
+            if(i < ((int)roman.length - 1) && i >=0) {
+                NSString *next = [roman substringWithRange:NSMakeRange(i+1, 1)];
+                NSInteger currentInt = [[dict objectForKey:current] integerValue];
+                NSInteger nextInt = [[dict objectForKey:next] integerValue];
+                if(currentInt < nextInt) {
+                    result -= currentInt;
+                } else{
+                    result += currentInt;
+                }
+            } else {
+                result += [[dict objectForKey:current] integerValue];
+            }
+            
+        } else {
+            NSLog(@"---> %s, roman = %@ is not valib roman count",__FUNCTION__,roman);
+            return result;
+        }
+    }
+    return result;
+}
+
+
 #pragma mark - Stack
 //-------------Stack------------
 //括号匹配
@@ -967,6 +1025,36 @@
     }
     
     NSLog(@"-----> %s,numbers = %@ lastIndex = %ld NodeVal = %ld",__FUNCTION__,numbers,lastIndex,(long)targetList.val);
+}
+
+// ------------------Dynamic programming----------------------
+//
+//你是一个专业的强盗，计划在街上抢劫房屋。每个房子都有一定数量的钱存在，阻止你抢劫他们的唯一限制是相邻的房屋有连接的安全系统，如果两个相邻的房子在同一个晚上被打破，它将自动联系警察。
+//
+//给出一个代表每个房子的金额的非负整数列表，确定今晚可以抢劫的最大金额而不警告警察。
+//* Primary idea: Dynamic Programming, dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]) o(n) o(1)
++ (void)houseRobber {
+    int array[] = {6,5,3,9,1,8,7,2,4};
+    //申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
+    int len = sizeof(array)/sizeof(array[0]);
+    int money = [self houseRobber:array len:len];
+    NSLog(@"---> %s,robber money = %d",__FUNCTION__,money);
+}
+
++ (int)houseRobber:(int [])array len:(int)len{
+    if(len == 1) {
+        return array[0];
+    }
+    if(len == 2) {
+        return  MAX(array[0], array[1]);
+    }
+    int current = MAX(array[0], array[1]);;
+    int prev = array[0];
+    for (int i = 2;i<len;i++) {
+        prev = current;
+        current = MAX(array[i] + array[i-2], prev);
+    }
+    return current;
 }
 @end
 

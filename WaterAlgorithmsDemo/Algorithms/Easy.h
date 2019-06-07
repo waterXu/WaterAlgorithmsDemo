@@ -1,5 +1,5 @@
 //
-//  Esay.h
+//  Easy.h
 //  WaterAlgorithmsDemo
 //
 //  Created by xuyanlan on 2019/5/8.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Esay : NSObject
+@interface Easy : NSObject
 //-------------Math------------
 //加一算法
 /**
@@ -40,9 +40,13 @@ NS_ASSUME_NONNULL_BEGIN
  *
  */
 + (void)addBinary;
+
 //异或运算
+//真真为假 假假为假 假真为真 真假为真 比如 a=9（二进制1001），b=12（二进制1100），那么 a ^ b 的结果是5（二进制0101）
 + (void)XORTest;
 
+//罗马数字转数字
++ (void)romanToInteger;
 
 //-------------Stack------------
 //括号匹配
@@ -171,6 +175,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)DFSBinaryTree;
 
+
 //---------------Linked List----------- 链表
 /**
  * Question Link: https://leetcode.com/problems/reverse-linked-list/
@@ -197,6 +202,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)mergeTwoSortedLists;
 //查找倒数第 n 个节点
 + (void)findLastIndexNode;
-@end
 
+// ------------------Dynamic programming----------------------
+//
+//你是一个专业的强盗，计划在街上抢劫房屋。每个房子都有一定数量的钱存在，阻止你抢劫他们的唯一限制是相邻的房屋有连接的安全系统，如果两个相邻的房子在同一个晚上被打破，它将自动联系警察。
+//
+//给出一个代表每个房子的金额的非负整数列表，确定今晚可以抢劫的最大金额而不警告警察。
++ (void)houseRobber;
+@end
 NS_ASSUME_NONNULL_END

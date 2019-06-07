@@ -7,7 +7,7 @@
 //
 
 #import "EasyViewController.h"
-#import "Esay.h"
+#import "Easy.h"
 
 @interface EasyViewController()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -26,6 +26,7 @@
                          @{@"name":@"powerOfFour",@"function":@"powerOfFour"},
                          @{@"name":@"addBinary",@"function":@"addBinary"},
                          @{@"name":@"XORTest",@"function":@"XORTest"},
+                         @{@"name":@"Roman To Int",@"function":@"romanToInteger"},
                          //Stack
                          @{@"name":@"Valid Parentheses",@"function":@"validParentheses"},
                          @{@"name":@"absolutePath",@"function":@"absolutePath"},
@@ -49,6 +50,8 @@
                          @{@"name":@"Reverse Linked List",@"function":@"reverseLinkedList"},
                          @{@"name":@"Merge Two Sorted Lists",@"function":@"mergeTwoSortedLists"},
                          @{@"name":@"findLastIndexNode",@"function":@"findLastIndexNode"},
+                         //Dynamic programming 动态规划
+                         @{@"name":@"House Robber",@"function":@"houseRobber"},
                          ];
     }
     return _dataSoource;
@@ -86,11 +89,11 @@
     NSString *func = self.dataSoource[indexPath.row][@"function"];
     SEL function = NSSelectorFromString(func);
 //    if([func isEqualToString:@"plusOne"]) {
-//        Esay *easy = [[Esay alloc] init];
+//        Easy *easy = [[Easy alloc] init];
 //        [easy performSelector:function];
 //        return;
 //    }
-    [Esay performSelector:function];
+    [Easy performSelector:function];
     
 }
 

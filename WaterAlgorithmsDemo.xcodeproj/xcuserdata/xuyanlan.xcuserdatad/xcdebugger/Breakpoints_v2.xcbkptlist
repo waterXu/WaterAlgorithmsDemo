@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "581482510.757373"
+            timestampString = "581604840.689714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "475"
-            endingLineNumber = "475"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
             landmarkName = "+validSudoku:"
             landmarkType = "7">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "581482510.7595201"
+            timestampString = "581604840.690441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "533"
+            endingLineNumber = "533"
             landmarkName = "+validSudoku:"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "581482510.7598439"
+            timestampString = "581604840.690956"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "536"
+            endingLineNumber = "536"
             landmarkName = "+validSudoku:"
             landmarkType = "7">
          </BreakpointContent>
@@ -73,14 +73,62 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WaterAlgorithmsDemo/main.m"
-            timestampString = "581267510.252607"
+            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
+            timestampString = "581604840.691395"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "UncaughtExceptionHandler"
-            landmarkType = "9">
+            startingLineNumber = "1055"
+            endingLineNumber = "1055"
+            landmarkName = "+houseRobber:len:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[Easy houseRobber:len:]"
+                  moduleName = "WaterAlgorithmsDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xuyanlan/xylLearn/WaterAlgorithmsDemo/WaterAlgorithmsDemo/Algorithms/Esay.m"
+                  timestampString = "581604859.9765919"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1055"
+                  endingLineNumber = "1055"
+                  offsetFromSymbolStart = "212">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[Easy houseRobber:len:]"
+                  moduleName = "WaterAlgorithmsDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/xuyanlan/xylLearn/WaterAlgorithmsDemo/WaterAlgorithmsDemo/Algorithms/Esay.m"
+                  timestampString = "581604859.978701"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "1055"
+                  endingLineNumber = "1055"
+                  offsetFromSymbolStart = "286">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
+            timestampString = "581604840.691834"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "564"
+            endingLineNumber = "564"
+            landmarkName = "+sortMergeArray"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

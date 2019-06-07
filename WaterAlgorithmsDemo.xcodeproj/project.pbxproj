@@ -66,7 +66,7 @@
 /* Begin PBXFileReference section */
 		5B4CD8C52283322300C33CF9 /* EasyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EasyViewController.h; sourceTree = "<group>"; };
 		5B4CD8C62283322300C33CF9 /* EasyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EasyViewController.m; sourceTree = "<group>"; };
-		5B4CD8C82283330200C33CF9 /* Esay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Esay.h; sourceTree = "<group>"; };
+		5B4CD8C82283330200C33CF9 /* Easy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Easy.h; sourceTree = "<group>"; };
 		5B4CD8C92283330200C33CF9 /* Esay.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Esay.m; sourceTree = "<group>"; };
 		5B527D2E20AEB8F000A5DF51 /* keyboardExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = keyboardExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B527D3020AEB8F000A5DF51 /* KeyboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KeyboardViewController.h; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 				5B7566FC2287ECE90044D317 /* MediumViewController.m */,
 				5B7566FE2287ECFD0044D317 /* Medium.h */,
 				5B7566FF2287ECFD0044D317 /* Medium.m */,
-				5B4CD8C82283330200C33CF9 /* Esay.h */,
+				5B4CD8C82283330200C33CF9 /* Easy.h */,
 				5B4CD8C92283330200C33CF9 /* Esay.m */,
 				5B63589522902AB2003A21B6 /* TreeNode.h */,
 				5B63589622902AB2003A21B6 /* TreeNode.m */,

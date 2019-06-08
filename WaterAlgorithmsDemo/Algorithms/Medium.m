@@ -268,5 +268,48 @@ static NSInteger times = 0;
     return left && right;
 }
 
++ (void)houseRobberIII {
+//Input: [3,2,3,null,3,null,1]
+//
+//    3
+//    / \
+//    2   3
+//    \   \
+//    3   1
+// 7
+//Input: [3,4,5,1,3,null,1]
+//
+//    3
+//    / \
+//    4   5
+//    / \   \
+//    1   3   1
+//
+//Output: 9
+//    NSArray *house = @[@3,@2,@3,[NSNull null],@3,[NSNull null],@1];
+//    NSArray *house = @[@3,@4,@5,@1,@3,[NSNull null],@1];
+    NSArray *house = @[@3,@2,@3,[NSNull null],@3,@4,@1];
+    TreeNode *root = [TreeNode createBinaryTreeNode:house];
+    NSInteger money1 = [self houseRobberIIIRobber:root];
+    NSInteger money2 = [self houseRobberIIINotRobber:root];
+    NSInteger money = MAX(money1, money2);
+    NSLog(@"--->%s this tree house = %@,robber money = %ld",__FUNCTION__,house,money);
+}
+
+//* Primary idea: Using two sums to track rob sum starting from current node or not,
+//*                 compare and get the maximum one
++ (NSInteger)houseRobberIIIRobber:(TreeNode *)tree{
+    if(!tree) {
+        return 0;
+    }
+    return [self houseRobberIIINotRobber:tree.left] + [self houseRobberIIINotRobber:tree.right] + tree.val;
+}
+
++ (NSInteger)houseRobberIIINotRobber:(TreeNode *)tree{
+    if(!tree) {
+        return 0;
+    }
+    return [self houseRobberIIIRobber:tree.left] + [self houseRobberIIIRobber:tree.right];
+}
 
 @end

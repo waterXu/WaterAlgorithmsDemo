@@ -1034,25 +1034,66 @@
 //给出一个代表每个房子的金额的非负整数列表，确定今晚可以抢劫的最大金额而不警告警察。
 //* Primary idea: Dynamic Programming, dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]) o(n) o(1)
 + (void)houseRobber {
-    int array[] = {6,5,3,9,1,8,7,2,4};
+    int array[] = {6,5,3,9,1,8,7,2,4,10,13,2};
     //申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
     int len = sizeof(array)/sizeof(array[0]);
-    int money = [self houseRobber:array len:len];
-    NSLog(@"---> %s,robber money = %d",__FUNCTION__,money);
+    int money1 = [self houseRobberOn:array len:len];
+    int money2 = [self houseRobberO1:array len:len];
+    NSAssert(money1 == money2, @"houseRobberOn should equal houseRobberO1");
+    NSLog(@"---> %s,robber money = %d",__FUNCTION__,money1);
 }
-
-+ (int)houseRobber:(int [])array len:(int)len{
++ (int)houseRobberOn:(int [])array len:(int)len{
+    //space(o(n))
     if(len == 1) {
         return array[0];
     }
-    if(len == 2) {
+    if(len == 2){
         return  MAX(array[0], array[1]);
     }
-    int current = MAX(array[0], array[1]);;
-    int prev = array[0];
-    for (int i = 2;i<len;i++) {
+    int ressult[len];
+    ressult[0] = array[0];
+    ressult[1]= MAX(array[0], array[1]);
+    int i = 2;
+    for (i = 2;i<len;i++) {
+        ressult[i] = MAX(ressult[i-2] + array[i], ressult[i-1]);
+    }
+    return ressult[i-1];
+}
+
++ (int)houseRobberO1:(int [])array len:(int)len{
+    //space(o(1))
+    int preprev = 0;
+    int prev = 0;
+    int current = 0;
+    for (int i = 0;i<len;i++) {
+        current = MAX(array[i] + preprev, prev);
+        preprev = prev;
         prev = current;
-        current = MAX(array[i] + array[i-2], prev);
+    }
+    return current;
+}
+
++ (void)houseRobberII {
+//    int array[] = {6,5,3,9,1,8,7,2,4,10,13,2};
+    int array[] = {8,2,3,7};
+
+    //申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
+    int len = sizeof(array)/sizeof(array[0]);
+    int money1 = [self houseRobberII:array start:0 end:len-1];
+    int money2 = [self houseRobberII:array start:1 end:len];
+    int money = MAX(money1, money2);
+    NSLog(@"---> %s,robber money = %d",__FUNCTION__,money);
+}
+
++ (int)houseRobberII:(int [])array start:(int)start end:(int)end{
+    //space(o(1))
+    int preprev = 0;
+    int prev = 0;
+    int current = 0;
+    for (int i = start;i<end;i++) {
+        current = MAX(array[i] + preprev, prev);
+        preprev = prev;
+        prev = current;
     }
     return current;
 }

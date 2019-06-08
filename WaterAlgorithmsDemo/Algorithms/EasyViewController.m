@@ -52,6 +52,7 @@
                          @{@"name":@"findLastIndexNode",@"function":@"findLastIndexNode"},
                          //Dynamic programming 动态规划
                          @{@"name":@"House Robber",@"function":@"houseRobber"},
+                         @{@"name":@"House Robber II",@"function":@"houseRobberII"},
                          ];
     }
     return _dataSoource;

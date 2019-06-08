@@ -209,5 +209,7 @@ NS_ASSUME_NONNULL_BEGIN
 //
 //给出一个代表每个房子的金额的非负整数列表，确定今晚可以抢劫的最大金额而不警告警察。
 + (void)houseRobber;
+//和houseRobber不同的是房子是环形的，也就是说首尾不能一起偷
++ (void)houseRobberII;
 @end
 NS_ASSUME_NONNULL_END

@@ -276,6 +276,36 @@
     return result;
 }
 
+//斐波那契数列  1 1 2 3 5 8 .... 定n个数是第n-1 和 n-2 的数之和。 f(n) = f(n-1) + f(n+2)
+//求第100个数
++ (void)feibonaqi {
+    NSUInteger num = [self feibonaqi:2000];
+    NSLog(@"---> %s, num = %lu",__FUNCTION__,(unsigned long)num);
+}
+
++ (NSUInteger)feibonaqi:(int)n {
+    if(n == 0) {
+        return 0;
+    }
+    if(n==1 || n ==2) {
+        return 1;
+    }
+    int i = 3;
+    NSUInteger current = 1;
+    NSUInteger prev = 1;
+    while (i <= n) {
+        NSUInteger temp = current;
+        current = current + prev;
+        prev = temp;
+        NSLog(@"---> %s,index = %d, current = %lu",__FUNCTION__,i,(unsigned long)current);
+        if(NSUIntegerMax - current < current) {//下次必将溢出
+            NSLog(@"---> %s, index = %d  is overflow",__FUNCTION__,i);
+            break;
+        }
+        i++;
+    }
+    return current;
+}
 
 #pragma mark - Stack
 //-------------Stack------------
@@ -818,6 +848,37 @@
         }
     }];
     return valid;
+}
+    
++ (void)isomorphicStrings {
+    NSString *t = @"egg";
+    NSString *s = @"add";
+    BOOL res = [self isomorphicStrings:t s:s];
+    NSAssert(res, @"--->%s, %@ isomorphic %@",__FUNCTION__,s,t);
+    
+    NSString *t1 = @"pair";
+    NSString *s1 = @"add";
+    BOOL res1 = [self isomorphicStrings:t1 s:s1];
+    NSAssert(!res1, @"--->%s, %@ not isomorphic %@",__FUNCTION__,s1,t1);
+}
+
++ (BOOL)isomorphicStrings:(NSString *)t s:(NSString *)s {
+    if(t.length != s.length) {
+        return NO;
+    }
+    NSMutableDictionary *tDict = [NSMutableDictionary dictionary];
+    NSMutableDictionary *sDict = [NSMutableDictionary dictionary];
+    for (int i=0; i < t.length; i++) {
+        NSString *currentT = [t substringWithRange:NSMakeRange(i, 1)];
+        NSString *currentS = [s substringWithRange:NSMakeRange(i, 1)];
+        if(!tDict[currentT] && !sDict[currentS]) {
+            tDict[currentT] = currentS;
+            sDict[currentS] = currentT;
+        } else if(tDict[currentT] != currentS || sDict[currentS] != currentT){
+            return NO;
+        }
+    }
+    return YES;
 }
 
 #pragma mark - Tree

@@ -10,7 +10,6 @@
 #import "TreeNode.h"
 static NSInteger times = 0;
 @implementation Medium
-
 //- (void)testSignature  {
 //    NSLog(@"---> %s",__FUNCTION__);
 //}
@@ -287,9 +286,20 @@ static NSInteger times = 0;
 //    1   3   1
 //
 //Output: 9
+    
+    //Input: [3,2,3,5,3,4,1]
+    //
+    //        3
+    //       / \
+    //      2   3
+    //     /\   /\
+    //    5  3 4 1
+    //   /\
+    //  8  1
+    // 20
 //    NSArray *house = @[@3,@2,@3,[NSNull null],@3,[NSNull null],@1];
 //    NSArray *house = @[@3,@4,@5,@1,@3,[NSNull null],@1];
-    NSArray *house = @[@3,@2,@3,[NSNull null],@3,@4,@1];
+    NSArray *house = @[@3,@2,@3,@5,@3,@4,@1,@8,@1];
     TreeNode *root = [TreeNode createBinaryTreeNode:house];
     NSInteger money1 = [self houseRobberIIIRobber:root];
     NSInteger money2 = [self houseRobberIIINotRobber:root];
@@ -310,7 +320,11 @@ static NSInteger times = 0;
     if(!tree) {
         return 0;
     }
-    return [self houseRobberIIIRobber:tree.left] + [self houseRobberIIIRobber:tree.right];
+    NSInteger money = [self houseRobberIIIRobber:tree.left] + [self houseRobberIIIRobber:tree.right];
+    NSInteger money1 = [self houseRobberIIINotRobber:tree.left] + [self houseRobberIIIRobber:tree.right];
+    NSInteger money2 = [self houseRobberIIIRobber:tree.left] + [self houseRobberIIINotRobber:tree.right];
+    NSInteger money3 = [self houseRobberIIINotRobber:tree.left] + [self houseRobberIIINotRobber:tree.right];
+    return MAX(MAX(money, money1), MAX(money2, money3));
 }
 
 @end

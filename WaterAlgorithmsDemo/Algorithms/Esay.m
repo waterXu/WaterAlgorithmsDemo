@@ -962,7 +962,8 @@
 }
 
 + (void)levelOrderBinaryTree {
-    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7];
+//    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7];
+    NSArray *numbers = @[@3,@9,@20,[NSNull null],[NSNull null],@15,@7];
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
     NSArray *result = [self levelOrderBinaryTree:root];
     NSLog(@"---> %s , tree = %@, level order = %@",__FUNCTION__,numbers,result);

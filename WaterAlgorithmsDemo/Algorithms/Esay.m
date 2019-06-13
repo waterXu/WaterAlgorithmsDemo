@@ -995,7 +995,7 @@
 }
 
 + (void)DFSBinaryTree {
-    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7];
+    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
     NSArray *result = [self DFSBinaryTree:root];
     NSLog(@"---> %s , tree = %@, level order = %@",__FUNCTION__,numbers,result);
@@ -1003,15 +1003,25 @@
 
 + (NSArray *)DFSBinaryTree:(TreeNode *)tree {
     NSMutableArray *result = [NSMutableArray array];
+    Stack *nodeStack = [[Stack alloc] init];
+    if(tree) {
+        [nodeStack push:tree];
+    }
+    while(!nodeStack.isEmpty) {
+        TreeNode *node = [nodeStack pop];
+        [result addObject:@(node.val)];
+        
+        if(node.right) {
+            [nodeStack push:node.right];
+        }
+        if (node.left) {
+            [nodeStack push:node.left];
+        }
+    }
     return [result copy];
 }
 
-+ (void)dfs:(TreeNode *)tree array:(NSMutableArray *)array {
-    if(tree == nil) {
-        return;
-    }
-    
-}
+
 
 #pragma mark - Linked List
 //---------------Linked List----------- 链表

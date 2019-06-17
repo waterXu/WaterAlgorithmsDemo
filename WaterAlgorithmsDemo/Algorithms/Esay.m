@@ -68,15 +68,15 @@
 }
 #pragma mark - Math
 //-------------Math------------
-+ (void)plusOne {
-    NSArray *testArray = @[@1,@2,@3,@4,@9];
-    NSArray *resultArray = [self plusOne:testArray];
-    NSLog(@"%@ plus one = %@",testArray,resultArray);
-
-    NSArray *testArray1 = @[@9,@9,@9,@9,@9];
-    NSArray *resultArray1 = [self plusOne:testArray1];
-    NSLog(@"%@ plus one = %@",testArray1,resultArray1);
-}
+//+ (void)plusOne {
+//    NSArray *testArray = @[@1,@2,@3,@4,@9];
+//    NSArray *resultArray = [self plusOne:testArray];
+//    NSLog(@"%@ plus one = %@",testArray,resultArray);
+//
+//    NSArray *testArray1 = @[@9,@9,@9,@9,@9];
+//    NSArray *resultArray1 = [self plusOne:testArray1];
+//    NSLog(@"%@ plus one = %@",testArray1,resultArray1);
+//}
 + (NSArray *)plusOne:(NSArray * _Nonnull)numbers {
     NSMutableArray *numberMutable = [NSMutableArray arrayWithArray:numbers];
     NSInteger index = numbers.count - 1;
@@ -1013,6 +1013,34 @@
     
 }
 
+/**
+ 对称树
+ */
++ (void)symmetricTree {
+    NSArray *numbers = @[@1,@2,@2,@3,@4,@4,@3];
+    TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
+    BOOL result = [self symmetricTree:root];
+    NSAssert(result, @"---> %s, tree = %@ is symmetric Tree",__FUNCTION__,numbers);
+    
+    
+    NSArray *numbers1 = @[@1,@2,@2,[NSNull null],@3,[NSNull null],@3];
+    TreeNode *root1 = [TreeNode createBinaryTreeNode:numbers1];
+    BOOL result1 = [self symmetricTree:root1];
+    NSAssert(!result1, @"---> %s, tree = %@ is symmetric Tree",__FUNCTION__,numbers1);
+    
+}
+
++ (BOOL)symmetricTree:(TreeNode *)tree {
+//    Queue *ququeLeft = [[Queue alloc] init];
+//    Queue *ququeRight = [[Queue alloc] init];
+//    TreeNode *left = tree.left;
+//    TreeNode *right = tree.right;
+//    if(left && right)
+//    while (<#condition#>) {
+//        <#statements#>
+//    }
+    return YES;
+}
 #pragma mark - Linked List
 //---------------Linked List----------- 链表
 + (NodeList *)creatNodelist:(NSArray<NSNumber *> *)numbers {

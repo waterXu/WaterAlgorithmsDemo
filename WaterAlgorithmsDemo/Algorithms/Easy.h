@@ -175,15 +175,20 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)binaryTreeMaxDepth;
 
 /**
- 层级遍历，广度优先遍历 BFS
+ 层级遍历，广度优先遍历 BFS  queue
  */
 + (void)levelOrderBinaryTree;
 
 
 /**
- 深度优先遍历 DFS
+ 深度优先遍历 DFS   stack
  */
 + (void)DFSBinaryTree;
+
+/**
+ 对称树
+ */
++ (void)symmetricTree;
 
 
 //---------------Linked List----------- 链表

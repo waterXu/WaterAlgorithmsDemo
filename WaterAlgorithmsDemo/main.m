@@ -53,6 +53,8 @@ int main(int argc, char * argv[]) {
 //    }
     @autoreleasepool {
         InitCrashReport();
+        NSLog(@"-----> runloop is %p",[NSRunLoop currentRunLoop]);//主线程的runloop
+
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

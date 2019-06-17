@@ -61,6 +61,7 @@
                          @{@"name":@"binaryTreePaths",@"function":@"binaryTreePaths"},
                          @{@"name":@"binaryTreeMaxDepth",@"function":@"binaryTreeMaxDepth"},
                          @{@"name":@"levelOrderBinaryTree",@"function":@"levelOrderBinaryTree"},
+                         @{@"name":@"Symmetric Tree 对称树",@"function":@"symmetricTree"},
                          ],
                          //---------------Linked List-----------
                          @[
@@ -95,7 +96,6 @@ __weak id reference = nil;
     // str 是一个 autorelease 对象，设置一个 weak 的引用来观察它。
     reference = str;
 }
-  
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     NSLog(@"%@", reference); // Console: (null)
@@ -136,11 +136,11 @@ __weak id reference = nil;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *func = self.dataSource[indexPath.section][indexPath.row][@"function"];
     SEL function = NSSelectorFromString(func);
-//    if([func isEqualToString:@"plusOne"]) {
+    if([func isEqualToString:@"plusOne"]) {
 //        Easy *easy = [[Easy alloc] init];
-//        [easy performSelector:function];
-//        return;
-//    }
+        [Easy performSelector:function];
+        return;
+    }
     [Easy performSelector:function];
     
 }

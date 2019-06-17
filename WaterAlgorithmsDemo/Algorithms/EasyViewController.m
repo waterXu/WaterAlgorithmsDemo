@@ -60,7 +60,8 @@
                          @[
                          @{@"name":@"binaryTreePaths",@"function":@"binaryTreePaths"},
                          @{@"name":@"binaryTreeMaxDepth",@"function":@"binaryTreeMaxDepth"},
-                         @{@"name":@"levelOrderBinaryTree",@"function":@"levelOrderBinaryTree"},
+                         @{@"name":@"levelOrderBinaryTree BFS",@"function":@"levelOrderBinaryTree"},
+                         @{@"name":@"DFSBinaryTree ",@"function":@"DFSBinaryTree"},
                          @{@"name":@"Symmetric Tree 对称树",@"function":@"symmetricTree"},
                          ],
                          //---------------Linked List-----------

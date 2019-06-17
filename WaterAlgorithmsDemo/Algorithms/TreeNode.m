@@ -188,9 +188,18 @@
 - (NSInteger)size {
     return self.elements.count;
 }
+
 - (void)push:(id)element {
     [self.elements addObject:element];
 }
+- (id)top {
+    if(self.isEmpty) {
+        return nil;
+    }
+    id element = [self.elements lastObject];
+    return element;
+}
+
 - (id)pop {
     if(self.isEmpty) {
         return nil;

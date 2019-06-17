@@ -45,5 +45,6 @@
 @property (nonatomic, strong, readonly) NSMutableArray *elements;
 - (void)push:(id)element;
 - (id)pop;
+- (id)top;
 
 @end

@@ -84,7 +84,11 @@ __weak id reference = nil;
     
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = [NSString stringWithFormat: @"Easy 进度:%lu / 50",self.dataSource.count];
+    NSInteger count = 0;
+    for (NSArray *section in self.dataSource) {
+        count = count + section.count;
+    }
+    self.navigationItem.title = [NSString stringWithFormat: @"Easy 进度:%lu / 50",count];
     self.navigationController.navigationBarHidden = NO;
     self.tableView = [[UITableView alloc] init];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];

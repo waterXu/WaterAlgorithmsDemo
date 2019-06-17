@@ -1027,29 +1027,35 @@
  对称树
  */
 + (void)symmetricTree {
-    NSArray *numbers = @[@1,@2,@2,@3,@4,@4,@3];
+    NSArray *numbers = @[@1,@2,@2,@3,@4,@4,@3,@5,@6,@7,@8,@8,@7,@6,@5];
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
     BOOL result = [self symmetricTree:root];
     NSAssert(result, @"---> %s, tree = %@ is symmetric Tree",__FUNCTION__,numbers);
+    NSLog(@"---> %s, tree = %@ is symmetric Tree",__FUNCTION__,numbers);
     
     
     NSArray *numbers1 = @[@1,@2,@2,[NSNull null],@3,[NSNull null],@3];
     TreeNode *root1 = [TreeNode createBinaryTreeNode:numbers1];
     BOOL result1 = [self symmetricTree:root1];
     NSAssert(!result1, @"---> %s, tree = %@ is symmetric Tree",__FUNCTION__,numbers1);
+    NSLog(@"---> %s, tree = %@  is not symmetric Tree",__FUNCTION__,numbers1);
     
 }
 
 + (BOOL)symmetricTree:(TreeNode *)tree {
-//    Queue *ququeLeft = [[Queue alloc] init];
-//    Queue *ququeRight = [[Queue alloc] init];
-//    TreeNode *left = tree.left;
-//    TreeNode *right = tree.right;
-//    if(left && right)
-//    while (<#condition#>) {
-//        <#statements#>
-//    }
-    return YES;
+    if(!tree) {
+        return NO;
+    }
+    return [self symmetricTreeHelper:tree.left right:tree.right];
+}
++ (BOOL)symmetricTreeHelper:(TreeNode *)left right:(TreeNode *)right {
+    if(!left && !right) {
+        return YES;
+    }
+    if(!left || !right || right.val != left.val) {
+        return NO;
+    }
+    return [self symmetricTreeHelper:left.left right:right.right] && [self symmetricTreeHelper:left.right right:right.left];
 }
 #pragma mark - Linked List
 //---------------Linked List----------- 链表

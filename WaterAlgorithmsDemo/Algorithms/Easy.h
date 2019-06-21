@@ -227,7 +227,8 @@ NS_ASSUME_NONNULL_BEGIN
 //和houseRobber不同的是房子是环形的，也就是说首尾不能一起偷
     
 + (void)houseRobberII;
-    
+//最低成本走到楼梯顶部，可以依次走一两步
++ (void)minCostClimbingStair;
 @end
 
 NS_ASSUME_NONNULL_END

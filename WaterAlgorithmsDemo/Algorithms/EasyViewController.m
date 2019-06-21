@@ -74,6 +74,7 @@
                          //Dynamic programming 动态规划
                          @{@"name":@"House Robber",@"function":@"houseRobber"},
                          @{@"name":@"House Robber II",@"function":@"houseRobberII"},
+                         @{@"name":@"min Cost Climbing Stair",@"function":@"minCostClimbingStair"},
                          ]
                          ];
         

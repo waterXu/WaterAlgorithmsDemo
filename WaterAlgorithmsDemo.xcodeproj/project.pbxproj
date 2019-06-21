@@ -133,13 +133,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5B40C282228DBDE600C7E07A /* JikeTime */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = JikeTime;
-			sourceTree = "<group>";
-		};
 		5B527D2F20AEB8F000A5DF51 /* keyboardExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,7 +165,6 @@
 		5BD3E08720A1E4A7008ACFD2 = {
 			isa = PBXGroup;
 			children = (
-				5B40C282228DBDE600C7E07A /* JikeTime */,
 				5BD3E09220A1E4A7008ACFD2 /* WaterAlgorithmsDemo */,
 				5BD3E0AB20A1E4A8008ACFD2 /* WaterAlgorithmsDemoTests */,
 				5BD3E0B620A1E4A8008ACFD2 /* WaterAlgorithmsDemoUITests */,

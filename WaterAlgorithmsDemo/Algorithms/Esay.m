@@ -1203,5 +1203,24 @@
     }
     return current;
 }
+
+//* Primary idea: Dynamic Programming, dp[i] = min(dp[i - 1], dp[i - 2] + nums[i]) o(n) o(1) ,  但是要保证最后走到了顶部
++ (void)minCostClimbingStair {
+    NSArray *stair = @[@10, @15, @20];
+//    NSArray *stair = @[@1, @100, @1, @1, @1, @100, @1, @1, @100, @1];
+    NSInteger minCost = [self minCostClimbingStair:stair];
+    NSLog(@"---> %s, minCost = %ld",__FUNCTION__,minCost);
+}
++ (NSInteger)minCostClimbingStair:(NSArray *)array{
+    NSInteger preprev = 0;
+    NSInteger prev = NSIntegerMax;
+    NSInteger current = NSIntegerMax;
+    for (int i = 0; i<array.count; i++) {
+        current = MIN([array[i] integerValue] + preprev, prev);
+        preprev = prev;
+        prev = current;
+    }
+    return current;
+}
 @end
 

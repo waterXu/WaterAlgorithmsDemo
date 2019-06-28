@@ -24,6 +24,7 @@
 		5BD3E0B820A1E4A8008ACFD2 /* WaterAlgorithmsDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3E0B720A1E4A8008ACFD2 /* WaterAlgorithmsDemoUITests.m */; };
 		5BD3E0CB20A2F526008ACFD2 /* TestNavBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3E0CA20A2F526008ACFD2 /* TestNavBarViewController.m */; };
 		E74F763022B5465600A4A70A /* iOSTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F762F22B5465600A4A70A /* iOSTestViewController.m */; };
+		E74F763322BD230E00A4A70A /* TestClang.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F763222BD230E00A4A70A /* TestClang.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,8 @@
 		5BD3E0CA20A2F526008ACFD2 /* TestNavBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestNavBarViewController.m; sourceTree = "<group>"; };
 		E74F762E22B5465600A4A70A /* iOSTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSTestViewController.h; sourceTree = "<group>"; };
 		E74F762F22B5465600A4A70A /* iOSTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTestViewController.m; sourceTree = "<group>"; };
+		E74F763122BD230E00A4A70A /* TestClang.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestClang.h; sourceTree = "<group>"; };
+		E74F763222BD230E00A4A70A /* TestClang.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestClang.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,8 @@
 				5B4CD8C92283330200C33CF9 /* Esay.m */,
 				5B63589522902AB2003A21B6 /* TreeNode.h */,
 				5B63589622902AB2003A21B6 /* TreeNode.m */,
+				E74F763122BD230E00A4A70A /* TestClang.h */,
+				E74F763222BD230E00A4A70A /* TestClang.m */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				5B4CD8C72283322300C33CF9 /* EasyViewController.m in Sources */,
 				5BD3E09820A1E4A7008ACFD2 /* ViewController.m in Sources */,
 				5BD3E0A320A1E4A8008ACFD2 /* main.m in Sources */,
+				E74F763322BD230E00A4A70A /* TestClang.m in Sources */,
 				5B4CD8CA2283330200C33CF9 /* Esay.m in Sources */,
 				5B7567002287ECFD0044D317 /* Medium.m in Sources */,
 				5BD3E0CB20A2F526008ACFD2 /* TestNavBarViewController.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import "iOSTestViewController.h"
 #import <objc/runtime.h>
+#import "TestClang.h"
 static char TestdynamicKey;
 @interface iOSTestViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -56,6 +57,11 @@ static char TestdynamicKey;
                          @{@"name":@"test block",@"function":@"testBlcok"},
                          @{@"name":@"test block property",@"function":@"testBlcokProperty"},
                          @{@"name":@"test block property invoke",@"function":@"testBlcokPropertyInvoke"},
+                         @{@"name":@"conCurrentQueueAsync 并行异步",@"function":@"conCurrentQueueAsync"},
+                         @{@"name":@"serialQueueAsync 串行异步",@"function":@"serialQueueAsync"},
+                         @{@"name":@"serialQueueSync 串行同步",@"function":@"serialQueueSync"},
+                         @{@"name":@"serialQueueAsyncAddSync 串行异步嵌套同步",@"function":@"serialQueueAsyncAddSync"},
+                         @{@"name":@"serialQueueSyncAddAsync 串行同步嵌套异步",@"function":@"serialQueueSyncAddAsync"},
                          ];
     }
     return _dataSoource;
@@ -431,7 +437,7 @@ static char TestdynamicKey;
     //加上const则会为__NSGlobalBlock__ ，加上const的value存储在常量区
     //原因：只要block literal里没有引用栈或堆上的数据，那么这个block会自动变为__NSGlobalBlock__类型，这是编译器的优化
 //    const int value = 10;
-    //截获了局部变量
+    //截获了局部变量 __NSMallocBlock__
     int value = 10;
         void(^blockB)(void) = ^{
         
@@ -446,6 +452,8 @@ static char TestdynamicKey;
             };
     
     NSLog(@"%@", blockC);
+    
+    [TestClang testBlcok];
 }
 
 
@@ -495,6 +503,101 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 //    NSLog(@"-----> runloop mode is %@", [[NSRunLoop currentRunLoop] currentMode]);
 }
 
+- (void)queue {
+    //并行队列
+    [self conCurrentQueueAsync];
+    //串行队列
+    [self serialQueueAsync];
+    
+}
+
+- (void)conCurrentQueueAsync {
+    //并行队列
+    dispatch_queue_t queue = dispatch_queue_create("testConcurrentQueueAsync", DISPATCH_QUEUE_CONCURRENT);
+    NSLog(@"---start--- %s",__FUNCTION__);
+    [[NSThread currentThread] setName:@"testName"];
+    dispatch_async(queue, ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    NSLog(@"---end--- %s",__FUNCTION__);
+    
+    
+}
+- (void)serialQueueAsync {
+    //串行队列
+    dispatch_queue_t queue = dispatch_queue_create("testSerialQueueAsync", DISPATCH_QUEUE_SERIAL);
+    NSLog(@"---start--- %s",__FUNCTION__);
+    [[NSThread currentThread] setName:@"testName"];
+    dispatch_async(queue, ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    NSLog(@"---end--- %s",__FUNCTION__);
+    
+    
+}
+
+- (void)serialQueueSync {
+    //串行队列
+    dispatch_queue_t queue = dispatch_queue_create("testSerialQueue", DISPATCH_QUEUE_SERIAL);
+    NSLog(@"---start--- %s",__FUNCTION__);
+    [[NSThread currentThread] setName:@"testName"];
+    dispatch_sync(queue, ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_sync(queue, ^{
+        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    dispatch_sync(queue, ^{
+        NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    NSLog(@"---end--- %s",__FUNCTION__);
+}
+- (void)serialQueueAsyncAddSync {
+    //串行队列
+    dispatch_queue_t queue = dispatch_queue_create("testSerialQueue", DISPATCH_QUEUE_SERIAL);
+    NSLog(@"---start--- %s",__FUNCTION__);
+    [[NSThread currentThread] setName:@"testName"];
+    dispatch_async(queue, ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+        dispatch_sync(queue, ^{
+            NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+        });
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    NSLog(@"---end--- %s",__FUNCTION__);
+    
+    
+}
+- (void)serialQueueSyncAddAsync {
+    //串行队列
+    dispatch_queue_t queue = dispatch_queue_create("testSerialQueue", DISPATCH_QUEUE_SERIAL);
+    NSLog(@"---start--- %s",__FUNCTION__);
+    [[NSThread currentThread] setName:@"testName"];
+    dispatch_sync(queue, ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+        dispatch_async(queue, ^{
+            NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+        });
+    });
+    dispatch_sync(queue, ^{
+        NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
+    });
+    NSLog(@"---end--- %s",__FUNCTION__);
+}
 
 @end
 

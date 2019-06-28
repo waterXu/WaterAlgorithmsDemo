@@ -1285,7 +1285,7 @@
     return result[len];
 }
 //股票买卖最大利润 ，买入要早于卖出 ， 分别记录一个最大差值，和之前的最小值
-+ (void)bestTimeToBuyandSell {
++ (void)bestTimeToBuyandSellStock {
     NSArray *stock = @[@6, @7, @3, @4, @8, @5, @9];
     NSInteger max = [self bestTimeToBuyandSell:stock];
     NSLog(@"----> %s, stock = %@ -- max = %ld",__FUNCTION__,stock,max);

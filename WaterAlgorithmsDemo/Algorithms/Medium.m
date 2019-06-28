@@ -198,7 +198,7 @@ static NSInteger times = 0;
     
     return [resultArray copy];
 }
-
+#pragma -mark tree
 //-------------------Tree------------------
 //是否为平衡二叉树
 + (void)validateBinarySearchTree {
@@ -326,5 +326,26 @@ static NSInteger times = 0;
     NSInteger money3 = [self houseRobberIIINotRobber:tree.left] + [self houseRobberIIINotRobber:tree.right];
     return MAX(MAX(money, money1), MAX(money2, money3));
 }
+#pragma -mark dp
+// ------------------dp------------------
+//股票买卖最大利润 ，买入要早于卖出 ,可以多次交易
+//关键：当天卖出以后，当天还可以买入,所以算法可以直接简化为只要今天比昨天大，就卖出。
++ (void)bestTimeToBuyandSellStockII {
+    NSArray *stock = @[@6, @7, @3, @4, @8, @5, @9];
+    NSInteger max = [self bestTimeToBuyandSellStockII:stock];
+    NSLog(@"----> %s, stock = %@ -- max = %ld",__FUNCTION__,stock,max);
+}
 
++ (NSInteger)bestTimeToBuyandSellStockII:(NSArray *)stock {
+    if (!stock || stock.count < 2) {
+        return 0;
+    }
+    NSInteger result = 0;
+    for (int i = 1; i<stock.count; i++) {
+        if([stock[i] integerValue] > [stock[i-1] integerValue]){
+            result = result + ([stock[i] integerValue] - [stock[i-1] integerValue]);
+        }
+    }
+    return result;
+}
 @end

@@ -22,6 +22,8 @@
                          //-----------------tree--------------
                          @{@"name":@"Validate Binary Search Tree",@"function":@"validateBinarySearchTree"},
                          @{@"name":@"houseRobberIII",@"function":@"houseRobberIII"},
+                         //----------------dp--------------------
+                         @{@"name":@"Best Time to Buy and Sell Stock II 买卖股票的最佳利润",@"function":@"bestTimeToBuyandSellStockII"},
                          ];
     }
     return _dataSoource;

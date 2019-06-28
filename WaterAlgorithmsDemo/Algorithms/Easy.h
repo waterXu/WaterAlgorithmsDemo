@@ -230,8 +230,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)houseRobberII;
 //最低成本走到楼梯顶部，可以依次走一两步
 + (void)minCostClimbingStair;
-//股票买卖最大利润 ，买入要早于卖出
-+ (void)bestTimeToBuyandSell;
+//股票买卖最大利润 ，买入要早于卖出, 一次交易
++ (void)bestTimeToBuyandSellStock;
 @end
 
 NS_ASSUME_NONNULL_END

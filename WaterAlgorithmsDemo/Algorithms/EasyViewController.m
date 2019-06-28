@@ -55,6 +55,7 @@
                          @{@"name":@"validPalindromeII",@"function":@"validPalindromeII"},
                          @{@"name":@"Word Pattern",@"function":@"wordPattern"},
                          @{@"name":@"Isomorphic Strings 字符同构",@"function":@"isomorphicStrings"},
+                         @{@"name":@"Valid Anagram 同字母异序",@"function":@"validAnagram"},
                          ],
                          //Tree
                          @[

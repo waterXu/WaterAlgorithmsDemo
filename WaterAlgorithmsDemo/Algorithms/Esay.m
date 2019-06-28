@@ -254,7 +254,7 @@
     NSInteger result = 0;
     for(int i = ((int)roman.length - 1); i >= 0; i--) {
         NSString *current = [roman substringWithRange:NSMakeRange(i, 1)];
-        if([dict.allKeys containsObject:current]) {
+        if(dict[current]) {
             if(i < ((int)roman.length - 1) && i >=0) {
                 NSString *next = [roman substringWithRange:NSMakeRange(i+1, 1)];
                 NSInteger currentInt = [[dict objectForKey:current] integerValue];
@@ -276,7 +276,7 @@
     return result;
 }
 
-//斐波那契数列  1 1 2 3 5 8 .... 定n个数是第n-1 和 n-2 的数之和。 f(n) = f(n-1) + f(n+2)
+//斐波那契数列  1 1 2 3 5 8 .... 定n个数是第n-1 和 n-2 的数之和。 f(n) = f(n-1) + f(n-2)
 //求第100个数
 + (void)feibonaqi {
     NSUInteger num = [self feibonaqi:2000];
@@ -881,6 +881,53 @@
     return YES;
 }
 
+//同字母异序
++ (void)validAnagram {
+    NSString *a = @"anagram";
+    NSString *b = @"nagaram";
+    NSLog(@"---- %s ------- start",__FUNCTION__);
+    BOOL result = [self validAnagram:a stringB:b];
+    NSLog(@"---- %s ------- end",__FUNCTION__);
+    NSAssert(result, @"----> %s, stringA = %@, stringB = %@",__FUNCTION__, a,b);
+    
+    
+    NSString *c = @"catsabdragrs";
+    NSString *d = @"fareasegaega";
+    NSLog(@"---- %s ------- start",__FUNCTION__);
+    BOOL result1 = [self validAnagram:c stringB:d];
+    NSLog(@"---- %s ------- end",__FUNCTION__);
+    NSAssert(!result1, @"----> %s, stringA = %@, stringB = %@",__FUNCTION__, c,d);
+}
+
++ (BOOL)validAnagram:(NSString *)stringA stringB:(NSString *)stringB {
+    if(stringA.length != stringB.length) {
+        return NO;
+    }
+    NSMutableDictionary *stringADict = [NSMutableDictionary dictionary];
+    for (int i = 0 ; i<stringA.length; i++) {
+        NSString *cur = [stringA substringWithRange:NSMakeRange(i, 1)];
+        if(stringADict[cur]) {
+            NSInteger count = [stringADict[cur] integerValue];
+            stringADict[cur] = @(count + 1);
+        } else {
+            stringADict[cur] = @(1);
+        }
+    }
+    for (int i = 0 ; i<stringB.length; i++) {
+        NSString *cur = [stringB substringWithRange:NSMakeRange(i, 1)];
+        if(!stringADict[cur]) {//不在 A 字典中，返回不匹配
+            return NO;
+        } else {
+            NSInteger countInA = [stringADict[cur] integerValue];
+            if(countInA > 1) {
+                stringADict[cur] = @(countInA - 1);
+            } else {
+                [stringADict removeObjectForKey:cur];
+            }
+        }
+    }
+    return YES;
+}
 #pragma mark - Tree
 //-----------------Tree-------------------
 
@@ -1048,6 +1095,7 @@
     }
     return [self symmetricTreeHelper:tree.left right:tree.right];
 }
+//都为空则对称，值相等则对称， left的 left子节点 和 right 的 right子节点 对比，left的 right子节点 和 right 的 left 子节点对比
 + (BOOL)symmetricTreeHelper:(TreeNode *)left right:(TreeNode *)right {
     if(!left && !right) {
         return YES;
@@ -1204,23 +1252,36 @@
     return current;
 }
 
-//* Primary idea: Dynamic Programming, dp[i] = min(dp[i - 1], dp[i - 2] + nums[i]) o(n) o(1) ,  但是要保证最后走到了顶部
+//* Primary idea: Dynamic Programming, dp[i] = min(dp[i - 1], dp[i - 2]) + nums[i]  ,  但是要保证最后走到了顶部
 + (void)minCostClimbingStair {
-    NSArray *stair = @[@10, @15, @20];
-//    NSArray *stair = @[@1, @100, @1, @1, @1, @100, @1, @1, @100, @1];
-    NSInteger minCost = [self minCostClimbingStair:stair];
-    NSLog(@"---> %s, minCost = %ld",__FUNCTION__,minCost);
+//    int array[] = {10, 15, 20};
+    int array[] = {1, 100,40,100, 1, 1, 1, 100, 1, 1, 100, 1};
+    int minCost = [self minCostClimbingStair:array len:sizeof(array)/sizeof(array[0])];
+    NSLog(@"---> %s,minCost = %d",__FUNCTION__, minCost);
+    
+    
+//    NSArray *stair1 = @[@1, @100, @1, @1, @1, @100, @1, @1, @100, @1];
+//    NSInteger minCost1 = [self minCostClimbingStair:stair1];
+//    NSLog(@"---> %s, stair1 = %@,minCost1 = %ld",__FUNCTION__,stair1, minCost1);
 }
-+ (NSInteger)minCostClimbingStair:(NSArray *)array{
-    NSInteger preprev = 0;
-    NSInteger prev = NSIntegerMax;
-    NSInteger current = NSIntegerMax;
-    for (int i = 0; i<array.count; i++) {
-        current = MIN([array[i] integerValue] + preprev, prev);
-        preprev = prev;
-        prev = current;
++ (int)minCostClimbingStair:(int[])array len:(int)len{
+    if (len==0) {
+        return 0;
     }
-    return current;
+    if (len == 1) {
+        return array[0];
+    }
+    int result[len+1] ;
+    result[0] = array[0];
+    result[1] = array[1];
+    for (int i=2; i<=len; i++) {
+        if(i == len) {
+            result[len] = MIN(result[i-1], result[i-2]);
+        }else {
+            result[i] = MIN(result[i-1], result[i-2]) + array[i];
+        }
+    }
+    return result[len];
 }
 @end
 

@@ -146,7 +146,8 @@ NS_ASSUME_NONNULL_BEGIN
      */
 //判断两个字符是否同构
 + (void)isomorphicStrings;
-
+//同字母异序 判断
++ (void)validAnagram;
 //-----------------tree-------------------
 
 /**

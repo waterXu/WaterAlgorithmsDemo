@@ -706,6 +706,7 @@
     }
 }
 
+
 #pragma mark - String
 //----------String------------
 //Example 1:
@@ -1180,7 +1181,7 @@
     
     NSLog(@"-----> %s,numbers = %@ lastIndex = %ld NodeVal = %ld",__FUNCTION__,numbers,lastIndex,(long)targetList.val);
 }
-
+#pragma -mark Dynamic programming
 // ------------------Dynamic programming----------------------
 //
 //你是一个专业的强盗，计划在街上抢劫房屋。每个房子都有一定数量的钱存在，阻止你抢劫他们的唯一限制是相邻的房屋有连接的安全系统，如果两个相邻的房子在同一个晚上被打破，它将自动联系警察。
@@ -1282,6 +1283,26 @@
         }
     }
     return result[len];
+}
+//股票买卖最大利润 ，买入要早于卖出 ， 分别记录一个最大差值，和之前的最小值
++ (void)bestTimeToBuyandSell {
+    NSArray *stock = @[@6, @7, @3, @4, @8, @5, @9];
+    NSInteger max = [self bestTimeToBuyandSell:stock];
+    NSLog(@"----> %s, stock = %@ -- max = %ld",__FUNCTION__,stock,max);
+}
+
++ (NSInteger)bestTimeToBuyandSell:(NSArray *)stock {
+    if (!stock || stock.count < 2) {
+        return 0;
+    }
+    NSInteger result = 0;
+    NSInteger min = [stock[0] integerValue];
+    for (int i = 0; i<stock.count; i++) {
+        min = MIN(min, [stock[i] integerValue]);
+        NSInteger sell = [stock[i] integerValue] - min;
+        result = MAX(result, sell);
+    }
+    return result;
 }
 @end
 

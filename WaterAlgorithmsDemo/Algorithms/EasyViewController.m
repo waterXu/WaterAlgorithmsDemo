@@ -76,6 +76,7 @@
                          @{@"name":@"House Robber",@"function":@"houseRobber"},
                          @{@"name":@"House Robber II",@"function":@"houseRobberII"},
                          @{@"name":@"min Cost Climbing Stair",@"function":@"minCostClimbingStair"},
+                         @{@"name":@"Best Time to Buy and Sell Stock 买卖股票的最佳利润",@"function":@"bestTimeToBuyandSell"},
                          ]
                          ];
         

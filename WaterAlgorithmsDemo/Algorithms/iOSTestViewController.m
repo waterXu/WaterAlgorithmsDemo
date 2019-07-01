@@ -8,7 +8,10 @@
 
 #import "iOSTestViewController.h"
 #import <objc/runtime.h>
-#import "TestClang.h"
+#import <libkern/OSSpinLockDeprecated.h>
+#import <os/lock.h>
+#import <pthread.h>
+
 static char TestdynamicKey;
 @interface iOSTestViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -62,6 +65,12 @@ static char TestdynamicKey;
                          @{@"name":@"serialQueueSync 串行同步",@"function":@"serialQueueSync"},
                          @{@"name":@"serialQueueAsyncAddSync 串行异步嵌套同步",@"function":@"serialQueueAsyncAddSync"},
                          @{@"name":@"serialQueueSyncAddAsync 串行同步嵌套异步",@"function":@"serialQueueSyncAddAsync"},
+                         @{@"name":@"锁 - osspinlink",@"function":@"osspinlink"},
+                         @{@"name":@"锁 - dispatch_semaphore",@"function":@"dispatchSemaphore"},
+                         @{@"name":@"锁 - pthread_mutex",@"function":@"pthreadMutex"},
+                         @{@"name":@"锁 - 递归锁pthread_mutex(recursive) ",@"function":@"pthreadMutexRecursive"},
+                         @{@"name":@"锁 - NSLock ",@"function":@"nslock"},
+                         @{@"name":@"锁 - NSCondition ",@"function":@"nscondition"},
                          ];
     }
     return _dataSoource;
@@ -453,7 +462,6 @@ static char TestdynamicKey;
     
     NSLog(@"%@", blockC);
     
-    [TestClang testBlcok];
 }
 
 
@@ -504,15 +512,15 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 }
 
 - (void)queue {
-    //并行队列
+    //并发队列
     [self conCurrentQueueAsync];
-    //串行队列
+    //串行队列 ，[NSThread currentThread] 为同一个
     [self serialQueueAsync];
-    
+    //dispatch_get_global_queue 为并发队列
 }
 
 - (void)conCurrentQueueAsync {
-    //并行队列
+    //并发队列
     dispatch_queue_t queue = dispatch_queue_create("testConcurrentQueueAsync", DISPATCH_QUEUE_CONCURRENT);
     NSLog(@"---start--- %s",__FUNCTION__);
     [[NSThread currentThread] setName:@"testName"];
@@ -598,6 +606,214 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     });
     NSLog(@"---end--- %s",__FUNCTION__);
 }
+
+
+- (void)osspinlink {
+    __block OSSpinLock oslock = OS_SPINLOCK_INIT;
+    //线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程1 准备上锁");
+        OSSpinLockLock(&oslock);
+        sleep(4);
+        NSLog(@"线程1");
+        //如果注释掉了OSSpinLockUnlock, 这个则 会绕过线程1，直到调用了线程2的解锁方法才会继续执行线程1中的任务
+//        2019-07-01 14:33:32.901755+0800 WaterAlgorithmsDemo[11247:299833] -----> runloop is 0x600000a782a0
+//        2019-07-01 14:33:36.974195+0800 WaterAlgorithmsDemo[11247:300024] 线程1 准备上锁
+//        2019-07-01 14:33:36.974195+0800 WaterAlgorithmsDemo[11247:300023] 线程2 准备上锁
+//        2019-07-01 14:33:36.974435+0800 WaterAlgorithmsDemo[11247:300023] 线程2
+//        2019-07-01 14:33:36.974637+0800 WaterAlgorithmsDemo[11247:300023] 线程2 解锁成功
+//        2019-07-01 14:33:40.980810+0800 WaterAlgorithmsDemo[11247:300024] 线程1
+//        2019-07-01 14:33:40.981110+0800 WaterAlgorithmsDemo[11247:300024] 线程1 解锁成功
+//        2019-07-01 14:33:40.981304+0800 WaterAlgorithmsDemo[11247:300024] --------------------------------------------------------
+
+        OSSpinLockUnlock(&oslock);
+        NSLog(@"线程1 解锁成功");
+        NSLog(@"--------------------------------------------------------");
+    });
+    
+    //线程2
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程2 准备上锁");
+        OSSpinLockLock(&oslock);
+        NSLog(@"线程2");
+        OSSpinLockUnlock(&oslock);
+        NSLog(@"线程2 解锁成功");
+    });
+    
+//    2019-07-01 14:35:52.719150+0800 WaterAlgorithmsDemo[11339:307019] 线程1 准备上锁
+//    2019-07-01 14:35:52.719151+0800 WaterAlgorithmsDemo[11339:307020] 线程2 准备上锁
+//    2019-07-01 14:35:56.724054+0800 WaterAlgorithmsDemo[11339:307019] 线程1
+//    2019-07-01 14:35:56.724344+0800 WaterAlgorithmsDemo[11339:307019] 线程1 解锁成功
+//    2019-07-01 14:35:56.724527+0800 WaterAlgorithmsDemo[11339:307019] --------------------------------------------------------
+//    2019-07-01 14:35:56.796211+0800 WaterAlgorithmsDemo[11339:307020] 线程2
+//    2019-07-01 14:35:56.796454+0800 WaterAlgorithmsDemo[11339:307020] 线程2 解锁成功
+}
+- (void)dispatchSemaphore {
+    
+    dispatch_semaphore_t signal = dispatch_semaphore_create(1); //传入值必须 >=0, 若传入为0则阻塞线程并等待timeout,时间到后会执行其后的语句
+    dispatch_time_t overTime = dispatch_time(DISPATCH_TIME_NOW, 3.0f * NSEC_PER_SEC);
+    
+    //线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程1 等待ing");
+        dispatch_semaphore_wait(signal, overTime); //signal 值 -1
+        NSLog(@"线程1");
+        sleep(1);
+        dispatch_semaphore_signal(signal); //signal 值 +1
+        NSLog(@"线程1 发送信号");
+        NSLog(@"--------------------------------------------------------");
+    });
+    
+    //线程2
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程2 等待ing");
+        dispatch_semaphore_wait(signal, overTime);
+        NSLog(@"线程2");
+        dispatch_semaphore_signal(signal);
+        NSLog(@"线程2 发送信号");
+    });
+}
+
+- (void)pthreadMutex {
+    static pthread_mutex_t pLock;
+    pthread_mutex_init(&pLock, NULL);
+    //1.线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+        NSLog(@"线程1 准备上锁");
+        pthread_mutex_lock(&pLock);
+        NSLog(@"线程1 睡3");
+        sleep(3);
+        NSLog(@"线程1");
+        pthread_mutex_unlock(&pLock);
+    });
+    
+    //1.线程2
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+        NSLog(@"线程2 准备上锁");
+        pthread_mutex_lock(&pLock);
+        NSLog(@"线程2 睡1");
+        sleep(1);
+        NSLog(@"线程2");
+        pthread_mutex_unlock(&pLock);
+    });
+}
+
+- (void)pthreadMutexRecursive {
+    static pthread_mutex_t pLock;
+    pthread_mutexattr_t attr;
+    pthread_mutexattr_init(&attr); //初始化attr并且给它赋予默认
+    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE); //设置锁类型，这边是设置为递归锁
+    pthread_mutex_init(&pLock, &attr);
+    pthread_mutexattr_destroy(&attr); //销毁一个属性对象，在重新进行初始化之前该结构不能重新使用
+    
+    //1.线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        static void (^RecursiveBlock)(int);
+        RecursiveBlock = ^(int value) {
+            pthread_mutex_lock(&pLock);
+            if (value > 0) {
+                NSLog(@"value: %d", value);
+                RecursiveBlock(value - 1);
+            }
+            pthread_mutex_unlock(&pLock);
+        };
+        RecursiveBlock(5);
+    });
+}
+- (void)nsrecursiveLock {
+    
+}
+- (void)nslock {
+    NSLock *lock = [NSLock new];
+    //线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程1 尝试加速ing...");
+        [lock lock];
+        sleep(3);//睡眠5秒
+        NSLog(@"线程1");
+        [lock unlock];
+        NSLog(@"线程1解锁成功");
+    });
+    
+    //线程2
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@"线程2 尝试加速ing...");
+        BOOL x =  [lock lockBeforeDate:[NSDate dateWithTimeIntervalSinceNow:4]];
+        if (x) {
+            NSLog(@"线程2");
+            [lock unlock];
+        }else{
+            NSLog(@"失败");
+        }
+    });
+}
+
+- (void)nscondition {
+    //NSCondition
+    //    看字面意思很好理解:
+    //
+    //    wait：进入等待状态
+    //waitUntilDate:：让一个线程等待一定的时间
+    //    signal：唤醒一个等待的线程
+    //    broadcast：唤醒所有等待的线程
+    
+//    NSCondition *cLock = [NSCondition new];
+//    //线程1
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        NSLog(@"start");
+//        [cLock lock];
+//        [cLock waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
+//        NSLog(@"线程1");
+//        [cLock unlock];
+//    });
+    
+    
+    NSCondition *cLock = [NSCondition new];
+    //线程1
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [cLock lock];
+        NSLog(@"线程1加锁成功");
+        [cLock wait];
+        NSLog(@"线程1");
+        [cLock unlock];
+    });
+    
+    //线程2
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [cLock lock];
+        NSLog(@"线程2加锁成功");
+        [cLock wait];
+        NSLog(@"线程2");
+        [cLock unlock];
+    });
+    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        sleep(2);
+//        NSLog(@"唤醒一个等待的线程");
+//        [cLock signal];
+//    });
+//    print
+//    2019-07-01 19:11:37.463133+0800 WaterAlgorithmsDemo[23526:754430] 线程1加锁成功
+//    2019-07-01 19:11:37.463514+0800 WaterAlgorithmsDemo[23526:754429] 线程2加锁成功
+//    2019-07-01 19:11:39.468499+0800 WaterAlgorithmsDemo[23526:755320] 唤醒一个等待的线程
+//    2019-07-01 19:11:39.469046+0800 WaterAlgorithmsDemo[23526:754430] 线程1
+    
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        sleep(2);
+        NSLog(@"唤醒所有等待的线程");
+        [cLock broadcast];
+    });
+//    print
+//    2019-07-01 19:13:53.621419+0800 WaterAlgorithmsDemo[23646:763721] 线程1加锁成功
+//    2019-07-01 19:13:53.621633+0800 WaterAlgorithmsDemo[23646:763722] 线程2加锁成功
+//    2019-07-01 19:13:55.622263+0800 WaterAlgorithmsDemo[23646:763720] 唤醒所有等待的线程
+//    2019-07-01 19:13:55.622833+0800 WaterAlgorithmsDemo[23646:763721] 线程1
+//    2019-07-01 19:13:55.623000+0800 WaterAlgorithmsDemo[23646:763722] 线程2
+}
+
 
 @end
 

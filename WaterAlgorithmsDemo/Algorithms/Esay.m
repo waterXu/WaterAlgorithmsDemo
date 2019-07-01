@@ -1041,7 +1041,7 @@
     
     return [resultArray copy];
 }
-
+//使用栈，右子树先进，左子树再进入，每次出栈一个节点
 + (void)DFSBinaryTree {
     NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];

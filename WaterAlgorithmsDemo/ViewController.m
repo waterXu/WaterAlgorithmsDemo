@@ -15,6 +15,7 @@
 #import <objc/runtime.h>
 #import <objc/objc.h>
 #import "iOSTestViewController.h"
+#import "TestClang.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -45,7 +46,7 @@
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
 //    [self printThread];
-    
+    [TestClang testBlcok];
 }
 
 

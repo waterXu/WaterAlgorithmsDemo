@@ -47,6 +47,7 @@ static char TestdynamicKey;
     if (_dataSoource == nil) {
         _dataSoource = @[
                          @{@"name":@"atomic VS noatomic",@"function":@"atomicVSnoatomic"},
+                         @{@"name":@"unsafe_unretain __weak",@"function":@"unsafeUnRetain"},
                          @{@"name":@"TestCallTrack",@"function":@"TestCallTrack"},
                          @{@"name":@"processPrint",@"function":@"processPrint"},
                          @{@"name":@"copyAndMutableCopy",@"function":@"copyAndMutableCopy"},
@@ -111,7 +112,16 @@ static char TestdynamicKey;
 }
 
 
-
+- (void)unsafeUnRetain {
+//    id __weak obj1 = nil;
+    id __unsafe_unretained obj1 = nil;
+    {
+        id obj0 = [[NSObject alloc] init];
+        obj1 = obj0;
+        NSLog(@"--->111 obj = %@",obj1);
+    }
+    NSLog(@"--->222 obj = %@",obj1);
+}
 
 - (void)copyAndMutableCopy {
     
@@ -545,6 +555,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     dispatch_async(queue, ^{
         NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
+    NSLog(@"---middle--- %s",__FUNCTION__);
     dispatch_async(queue, ^{
         NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
@@ -649,7 +660,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 //    2019-07-01 14:35:56.796454+0800 WaterAlgorithmsDemo[11339:307020] 线程2 解锁成功
 }
 - (void)dispatchSemaphore {
-    
+    //dispatch_semaphore_t 是一种更细粒度的锁
     dispatch_semaphore_t signal = dispatch_semaphore_create(1); //传入值必须 >=0, 若传入为0则阻塞线程并等待timeout,时间到后会执行其后的语句
     dispatch_time_t overTime = dispatch_time(DISPATCH_TIME_NOW, 3.0f * NSEC_PER_SEC);
     

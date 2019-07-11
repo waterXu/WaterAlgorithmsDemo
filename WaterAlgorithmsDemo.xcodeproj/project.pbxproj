@@ -23,6 +23,7 @@
 		5BD3E0AD20A1E4A8008ACFD2 /* WaterAlgorithmsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3E0AC20A1E4A8008ACFD2 /* WaterAlgorithmsDemoTests.m */; };
 		5BD3E0B820A1E4A8008ACFD2 /* WaterAlgorithmsDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3E0B720A1E4A8008ACFD2 /* WaterAlgorithmsDemoUITests.m */; };
 		5BD3E0CB20A2F526008ACFD2 /* TestNavBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BD3E0CA20A2F526008ACFD2 /* TestNavBarViewController.m */; };
+		E73EC91E22D499B900043622 /* testGcc.c in Sources */ = {isa = PBXBuildFile; fileRef = E73EC91D22D499B900043622 /* testGcc.c */; };
 		E74F763022B5465600A4A70A /* iOSTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F762F22B5465600A4A70A /* iOSTestViewController.m */; };
 		E74F763322BD230E00A4A70A /* TestClang.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F763222BD230E00A4A70A /* TestClang.m */; };
 /* End PBXBuildFile section */
@@ -98,6 +99,8 @@
 		5BD3E0B920A1E4A8008ACFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5BD3E0C920A2F526008ACFD2 /* TestNavBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestNavBarViewController.h; sourceTree = "<group>"; };
 		5BD3E0CA20A2F526008ACFD2 /* TestNavBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestNavBarViewController.m; sourceTree = "<group>"; };
+		E73EC91C22D499B900043622 /* testGcc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = testGcc.h; sourceTree = "<group>"; };
+		E73EC91D22D499B900043622 /* testGcc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = testGcc.c; sourceTree = "<group>"; };
 		E74F762E22B5465600A4A70A /* iOSTestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSTestViewController.h; sourceTree = "<group>"; };
 		E74F762F22B5465600A4A70A /* iOSTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTestViewController.m; sourceTree = "<group>"; };
 		E74F763122BD230E00A4A70A /* TestClang.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestClang.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 		5B63589422902A87003A21B6 /* Algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				E73EC91C22D499B900043622 /* testGcc.h */,
+				E73EC91D22D499B900043622 /* testGcc.c */,
 				E74F762E22B5465600A4A70A /* iOSTestViewController.h */,
 				E74F762F22B5465600A4A70A /* iOSTestViewController.m */,
 				5B4CD8C52283322300C33CF9 /* EasyViewController.h */,
@@ -405,6 +410,7 @@
 				5B7566FD2287ECE90044D317 /* MediumViewController.m in Sources */,
 				E74F763022B5465600A4A70A /* iOSTestViewController.m in Sources */,
 				5B63589722902AB2003A21B6 /* TreeNode.m in Sources */,
+				E73EC91E22D499B900043622 /* testGcc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

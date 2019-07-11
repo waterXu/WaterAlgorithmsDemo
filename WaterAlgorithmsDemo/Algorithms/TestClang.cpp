@@ -106,10 +106,11 @@ struct __AtAutoreleasePool {
 };
 
 #define __OFFSETOFIVAR__(TYPE, MEMBER) ((long long) &((TYPE *)0)->MEMBER)
-static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_0 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"just a block",12};
-static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_1 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8," block1 = %@",12};
-static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_2 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"just a block === %d, numStatic = %d numGlobel = %d  numBlock=%d numBlock2=%d numBlockTest = %d",94};
-static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_3 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"block2 = %@",11};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_0 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"\345\223\210\345\223\210\345\223\210 %ld",13};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_1 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8," block1 = %@",12};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_2 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"just a block === %d, numStatic = %d numGlobel = %d  numBlock=%d numBlock2=%d numBlockTest = %d",94};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_3 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"\345\223\210\345\223\210\345\223\210 %ld",13};
+static __NSConstantStringImpl __NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_4 __attribute__ ((section ("__DATA, __cfstring"))) = {__CFConstantStringClassReference,0x000007c8,"block2 = %@",11};
 
 
 
@@ -228,6 +229,7 @@ typedef unsigned long uintptr_t;
 
 
 
+
 typedef u_int64_t user_addr_t;
 typedef u_int64_t user_size_t;
 typedef int64_t user_ssize_t;
@@ -235,13 +237,6 @@ typedef int64_t user_long_t;
 typedef u_int64_t user_ulong_t;
 typedef int64_t user_time_t;
 typedef int64_t user_off_t;
-
-
-
-
-
-
-
 typedef u_int64_t syscall_arg_t;
 typedef __int64_t __darwin_blkcnt_t;
 typedef __int32_t __darwin_blksize_t;
@@ -332,37 +327,161 @@ typedef struct _opaque_pthread_rwlock_t __darwin_pthread_rwlock_t;
 typedef struct _opaque_pthread_rwlockattr_t __darwin_pthread_rwlockattr_t;
 typedef struct _opaque_pthread_t *__darwin_pthread_t;
 
-static inline
-__uint16_t
+
+
+
+
+
+
+
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
+typedef unsigned long long uint64_t;
+
+
+typedef int8_t int_least8_t;
+typedef int16_t int_least16_t;
+typedef int32_t int_least32_t;
+typedef int64_t int_least64_t;
+typedef uint8_t uint_least8_t;
+typedef uint16_t uint_least16_t;
+typedef uint32_t uint_least32_t;
+typedef uint64_t uint_least64_t;
+
+
+
+typedef int8_t int_fast8_t;
+typedef int16_t int_fast16_t;
+typedef int32_t int_fast32_t;
+typedef int64_t int_fast64_t;
+typedef uint8_t uint_fast8_t;
+typedef uint16_t uint_fast16_t;
+typedef uint32_t uint_fast32_t;
+typedef uint64_t uint_fast64_t;
+typedef long int intmax_t;
+typedef long unsigned int uintmax_t;
+
+
+
+static __inline__
+uint16_t
 _OSSwapInt16(
- __uint16_t _data
+ uint16_t data
  )
 {
- return (__uint16_t)((_data << 8) | (_data >> 8));
+
+ return (uint16_t)(data << 8 | data >> 8);
 }
 
-static inline
-__uint32_t
+static __inline__
+uint32_t
 _OSSwapInt32(
- __uint32_t _data
+ uint32_t data
  )
 {
 
- return __builtin_bswap32(_data);
+ data = __builtin_bswap32(data);
 
 
 
 
+
+ return data;
+}
+
+static __inline__
+uint64_t
+_OSSwapInt64(
+ uint64_t data
+ )
+{
+
+ return __builtin_bswap64(data);
 }
 
 
-static inline
-__uint64_t
-_OSSwapInt64(
- __uint64_t _data
+
+static __inline__
+uint16_t
+OSReadSwapInt16(
+ const volatile void * base,
+ uintptr_t offset
  )
 {
- return __builtin_bswap64(_data);
+ uint16_t result;
+
+ result = *(volatile uint16_t *)((volatile uintptr_t)base + offset);
+ return _OSSwapInt16(result);
+}
+
+static __inline__
+uint32_t
+OSReadSwapInt32(
+ const volatile void * base,
+ uintptr_t offset
+ )
+{
+ uint32_t result;
+
+ result = *(volatile uint32_t *)((volatile uintptr_t)base + offset);
+ return _OSSwapInt32(result);
+}
+
+static __inline__
+uint64_t
+OSReadSwapInt64(
+ const volatile void * base,
+ uintptr_t offset
+ )
+{
+ volatile uint32_t * inp;
+ union ullc {
+  uint64_t ull;
+  uint32_t ul[2];
+ } outv;
+
+ inp = (volatile uint32_t *)((volatile uintptr_t)base + offset);
+ outv.ul[0] = inp[1];
+ outv.ul[1] = inp[0];
+ outv.ul[0] = _OSSwapInt32(outv.ul[0]);
+ outv.ul[1] = _OSSwapInt32(outv.ul[1]);
+ return outv.ull;
+}
+
+
+
+static __inline__
+void
+OSWriteSwapInt16(
+ volatile void * base,
+ uintptr_t offset,
+ uint16_t data
+ )
+{
+ *(volatile uint16_t *)((volatile uintptr_t)base + offset) = _OSSwapInt16(data);
+}
+
+static __inline__
+void
+OSWriteSwapInt32(
+ volatile void * base,
+ uintptr_t offset,
+ uint32_t data
+ )
+{
+ *(volatile uint32_t *)((volatile uintptr_t)base + offset) = _OSSwapInt32(data);
+}
+
+static __inline__
+void
+OSWriteSwapInt64(
+ volatile void * base,
+ uintptr_t offset,
+ uint64_t data
+ )
+{
+ *(volatile uint64_t *)((volatile uintptr_t)base + offset) = _OSSwapInt64(data);
 }
 
 
@@ -512,526 +631,80 @@ typedef enum {
  P_PGID
 } idtype_t;
 typedef int sig_atomic_t;
-struct __darwin_i386_thread_state
+struct __darwin_arm_exception_state
 {
-    unsigned int __eax;
-    unsigned int __ebx;
-    unsigned int __ecx;
-    unsigned int __edx;
-    unsigned int __edi;
-    unsigned int __esi;
-    unsigned int __ebp;
-    unsigned int __esp;
-    unsigned int __ss;
-    unsigned int __eflags;
-    unsigned int __eip;
-    unsigned int __cs;
-    unsigned int __ds;
-    unsigned int __es;
-    unsigned int __fs;
-    unsigned int __gs;
+ __uint32_t __exception;
+ __uint32_t __fsr;
+ __uint32_t __far;
 };
-struct __darwin_fp_control
+struct __darwin_arm_exception_state64
 {
-    unsigned short __invalid :1,
-        __denorm :1,
-    __zdiv :1,
-    __ovrfl :1,
-    __undfl :1,
-    __precis :1,
-      :2,
-    __pc :2,
-
-
-
-
-
-    __rc :2,
-
-
-
-
-
-
-             :1,
-      :3;
+ __uint64_t __far;
+ __uint32_t __esr;
+ __uint32_t __exception;
 };
-typedef struct __darwin_fp_control __darwin_fp_control_t;
-struct __darwin_fp_status
+struct __darwin_arm_thread_state
 {
-    unsigned short __invalid :1,
-        __denorm :1,
-    __zdiv :1,
-    __ovrfl :1,
-    __undfl :1,
-    __precis :1,
-    __stkflt :1,
-    __errsumm :1,
-    __c0 :1,
-    __c1 :1,
-    __c2 :1,
-    __tos :3,
-    __c3 :1,
-    __busy :1;
+ __uint32_t __r[13];
+ __uint32_t __sp;
+ __uint32_t __lr;
+ __uint32_t __pc;
+ __uint32_t __cpsr;
 };
-typedef struct __darwin_fp_status __darwin_fp_status_t;
-struct __darwin_mmst_reg
+struct __darwin_arm_thread_state64
 {
- char __mmst_reg[10];
- char __mmst_rsrv[6];
+ __uint64_t __x[29];
+ __uint64_t __fp;
+ __uint64_t __lr;
+ __uint64_t __sp;
+ __uint64_t __pc;
+ __uint32_t __cpsr;
+ __uint32_t __pad;
 };
-struct __darwin_xmm_reg
+struct __darwin_arm_vfp_state
 {
- char __xmm_reg[16];
+ __uint32_t __r[64];
+ __uint32_t __fpscr;
 };
-struct __darwin_ymm_reg
+struct __darwin_arm_neon_state64
 {
- char __ymm_reg[32];
+ __uint128_t __v[32];
+ __uint32_t __fpsr;
+ __uint32_t __fpcr;
 };
-struct __darwin_zmm_reg
+
+struct __darwin_arm_neon_state
 {
- char __zmm_reg[64];
+ __uint128_t __v[16];
+ __uint32_t __fpsr;
+ __uint32_t __fpcr;
 };
-struct __darwin_opmask_reg
+struct arm_legacy_debug_state
 {
- char __opmask_reg[8];
+ __uint32_t __bvr[16];
+ __uint32_t __bcr[16];
+ __uint32_t __wvr[16];
+ __uint32_t __wcr[16];
 };
-struct __darwin_i386_float_state
+struct __darwin_arm_debug_state32
 {
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
- __uint16_t __fpu_rsrv2;
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- char __fpu_rsrv4[14*16];
- int __fpu_reserved1;
+ __uint32_t __bvr[16];
+ __uint32_t __bcr[16];
+ __uint32_t __wvr[16];
+ __uint32_t __wcr[16];
+ __uint64_t __mdscr_el1;
 };
 
 
-struct __darwin_i386_avx_state
+struct __darwin_arm_debug_state64
 {
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
- __uint16_t __fpu_rsrv2;
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- char __fpu_rsrv4[14*16];
- int __fpu_reserved1;
- char __avx_reserved1[64];
- struct __darwin_xmm_reg __fpu_ymmh0;
- struct __darwin_xmm_reg __fpu_ymmh1;
- struct __darwin_xmm_reg __fpu_ymmh2;
- struct __darwin_xmm_reg __fpu_ymmh3;
- struct __darwin_xmm_reg __fpu_ymmh4;
- struct __darwin_xmm_reg __fpu_ymmh5;
- struct __darwin_xmm_reg __fpu_ymmh6;
- struct __darwin_xmm_reg __fpu_ymmh7;
+ __uint64_t __bvr[16];
+ __uint64_t __bcr[16];
+ __uint64_t __wvr[16];
+ __uint64_t __wcr[16];
+ __uint64_t __mdscr_el1;
 };
-
-
-struct __darwin_i386_avx512_state
-{
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
- __uint16_t __fpu_rsrv2;
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- char __fpu_rsrv4[14*16];
- int __fpu_reserved1;
- char __avx_reserved1[64];
- struct __darwin_xmm_reg __fpu_ymmh0;
- struct __darwin_xmm_reg __fpu_ymmh1;
- struct __darwin_xmm_reg __fpu_ymmh2;
- struct __darwin_xmm_reg __fpu_ymmh3;
- struct __darwin_xmm_reg __fpu_ymmh4;
- struct __darwin_xmm_reg __fpu_ymmh5;
- struct __darwin_xmm_reg __fpu_ymmh6;
- struct __darwin_xmm_reg __fpu_ymmh7;
- struct __darwin_opmask_reg __fpu_k0;
- struct __darwin_opmask_reg __fpu_k1;
- struct __darwin_opmask_reg __fpu_k2;
- struct __darwin_opmask_reg __fpu_k3;
- struct __darwin_opmask_reg __fpu_k4;
- struct __darwin_opmask_reg __fpu_k5;
- struct __darwin_opmask_reg __fpu_k6;
- struct __darwin_opmask_reg __fpu_k7;
- struct __darwin_ymm_reg __fpu_zmmh0;
- struct __darwin_ymm_reg __fpu_zmmh1;
- struct __darwin_ymm_reg __fpu_zmmh2;
- struct __darwin_ymm_reg __fpu_zmmh3;
- struct __darwin_ymm_reg __fpu_zmmh4;
- struct __darwin_ymm_reg __fpu_zmmh5;
- struct __darwin_ymm_reg __fpu_zmmh6;
- struct __darwin_ymm_reg __fpu_zmmh7;
-};
-struct __darwin_i386_exception_state
-{
- __uint16_t __trapno;
- __uint16_t __cpu;
- __uint32_t __err;
- __uint32_t __faultvaddr;
-};
-struct __darwin_x86_debug_state32
-{
- unsigned int __dr0;
- unsigned int __dr1;
- unsigned int __dr2;
- unsigned int __dr3;
- unsigned int __dr4;
- unsigned int __dr5;
- unsigned int __dr6;
- unsigned int __dr7;
-};
-struct __darwin_x86_thread_state64
-{
- __uint64_t __rax;
- __uint64_t __rbx;
- __uint64_t __rcx;
- __uint64_t __rdx;
- __uint64_t __rdi;
- __uint64_t __rsi;
- __uint64_t __rbp;
- __uint64_t __rsp;
- __uint64_t __r8;
- __uint64_t __r9;
- __uint64_t __r10;
- __uint64_t __r11;
- __uint64_t __r12;
- __uint64_t __r13;
- __uint64_t __r14;
- __uint64_t __r15;
- __uint64_t __rip;
- __uint64_t __rflags;
- __uint64_t __cs;
- __uint64_t __fs;
- __uint64_t __gs;
-};
-struct __darwin_x86_thread_full_state64
-{
- struct __darwin_x86_thread_state64 ss64;
- __uint64_t __ds;
- __uint64_t __es;
- __uint64_t __ss;
-};
-struct __darwin_x86_float_state64
-{
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
-
-
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
-
- __uint16_t __fpu_rsrv2;
-
-
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
-
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- struct __darwin_xmm_reg __fpu_xmm8;
- struct __darwin_xmm_reg __fpu_xmm9;
- struct __darwin_xmm_reg __fpu_xmm10;
- struct __darwin_xmm_reg __fpu_xmm11;
- struct __darwin_xmm_reg __fpu_xmm12;
- struct __darwin_xmm_reg __fpu_xmm13;
- struct __darwin_xmm_reg __fpu_xmm14;
- struct __darwin_xmm_reg __fpu_xmm15;
- char __fpu_rsrv4[6*16];
- int __fpu_reserved1;
-};
-
-
-struct __darwin_x86_avx_state64
-{
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
-
-
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
-
- __uint16_t __fpu_rsrv2;
-
-
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
-
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- struct __darwin_xmm_reg __fpu_xmm8;
- struct __darwin_xmm_reg __fpu_xmm9;
- struct __darwin_xmm_reg __fpu_xmm10;
- struct __darwin_xmm_reg __fpu_xmm11;
- struct __darwin_xmm_reg __fpu_xmm12;
- struct __darwin_xmm_reg __fpu_xmm13;
- struct __darwin_xmm_reg __fpu_xmm14;
- struct __darwin_xmm_reg __fpu_xmm15;
- char __fpu_rsrv4[6*16];
- int __fpu_reserved1;
- char __avx_reserved1[64];
- struct __darwin_xmm_reg __fpu_ymmh0;
- struct __darwin_xmm_reg __fpu_ymmh1;
- struct __darwin_xmm_reg __fpu_ymmh2;
- struct __darwin_xmm_reg __fpu_ymmh3;
- struct __darwin_xmm_reg __fpu_ymmh4;
- struct __darwin_xmm_reg __fpu_ymmh5;
- struct __darwin_xmm_reg __fpu_ymmh6;
- struct __darwin_xmm_reg __fpu_ymmh7;
- struct __darwin_xmm_reg __fpu_ymmh8;
- struct __darwin_xmm_reg __fpu_ymmh9;
- struct __darwin_xmm_reg __fpu_ymmh10;
- struct __darwin_xmm_reg __fpu_ymmh11;
- struct __darwin_xmm_reg __fpu_ymmh12;
- struct __darwin_xmm_reg __fpu_ymmh13;
- struct __darwin_xmm_reg __fpu_ymmh14;
- struct __darwin_xmm_reg __fpu_ymmh15;
-};
-
-
-struct __darwin_x86_avx512_state64
-{
- int __fpu_reserved[2];
- struct __darwin_fp_control __fpu_fcw;
- struct __darwin_fp_status __fpu_fsw;
- __uint8_t __fpu_ftw;
- __uint8_t __fpu_rsrv1;
- __uint16_t __fpu_fop;
-
-
- __uint32_t __fpu_ip;
- __uint16_t __fpu_cs;
-
- __uint16_t __fpu_rsrv2;
-
-
- __uint32_t __fpu_dp;
- __uint16_t __fpu_ds;
-
- __uint16_t __fpu_rsrv3;
- __uint32_t __fpu_mxcsr;
- __uint32_t __fpu_mxcsrmask;
- struct __darwin_mmst_reg __fpu_stmm0;
- struct __darwin_mmst_reg __fpu_stmm1;
- struct __darwin_mmst_reg __fpu_stmm2;
- struct __darwin_mmst_reg __fpu_stmm3;
- struct __darwin_mmst_reg __fpu_stmm4;
- struct __darwin_mmst_reg __fpu_stmm5;
- struct __darwin_mmst_reg __fpu_stmm6;
- struct __darwin_mmst_reg __fpu_stmm7;
- struct __darwin_xmm_reg __fpu_xmm0;
- struct __darwin_xmm_reg __fpu_xmm1;
- struct __darwin_xmm_reg __fpu_xmm2;
- struct __darwin_xmm_reg __fpu_xmm3;
- struct __darwin_xmm_reg __fpu_xmm4;
- struct __darwin_xmm_reg __fpu_xmm5;
- struct __darwin_xmm_reg __fpu_xmm6;
- struct __darwin_xmm_reg __fpu_xmm7;
- struct __darwin_xmm_reg __fpu_xmm8;
- struct __darwin_xmm_reg __fpu_xmm9;
- struct __darwin_xmm_reg __fpu_xmm10;
- struct __darwin_xmm_reg __fpu_xmm11;
- struct __darwin_xmm_reg __fpu_xmm12;
- struct __darwin_xmm_reg __fpu_xmm13;
- struct __darwin_xmm_reg __fpu_xmm14;
- struct __darwin_xmm_reg __fpu_xmm15;
- char __fpu_rsrv4[6*16];
- int __fpu_reserved1;
- char __avx_reserved1[64];
- struct __darwin_xmm_reg __fpu_ymmh0;
- struct __darwin_xmm_reg __fpu_ymmh1;
- struct __darwin_xmm_reg __fpu_ymmh2;
- struct __darwin_xmm_reg __fpu_ymmh3;
- struct __darwin_xmm_reg __fpu_ymmh4;
- struct __darwin_xmm_reg __fpu_ymmh5;
- struct __darwin_xmm_reg __fpu_ymmh6;
- struct __darwin_xmm_reg __fpu_ymmh7;
- struct __darwin_xmm_reg __fpu_ymmh8;
- struct __darwin_xmm_reg __fpu_ymmh9;
- struct __darwin_xmm_reg __fpu_ymmh10;
- struct __darwin_xmm_reg __fpu_ymmh11;
- struct __darwin_xmm_reg __fpu_ymmh12;
- struct __darwin_xmm_reg __fpu_ymmh13;
- struct __darwin_xmm_reg __fpu_ymmh14;
- struct __darwin_xmm_reg __fpu_ymmh15;
- struct __darwin_opmask_reg __fpu_k0;
- struct __darwin_opmask_reg __fpu_k1;
- struct __darwin_opmask_reg __fpu_k2;
- struct __darwin_opmask_reg __fpu_k3;
- struct __darwin_opmask_reg __fpu_k4;
- struct __darwin_opmask_reg __fpu_k5;
- struct __darwin_opmask_reg __fpu_k6;
- struct __darwin_opmask_reg __fpu_k7;
- struct __darwin_ymm_reg __fpu_zmmh0;
- struct __darwin_ymm_reg __fpu_zmmh1;
- struct __darwin_ymm_reg __fpu_zmmh2;
- struct __darwin_ymm_reg __fpu_zmmh3;
- struct __darwin_ymm_reg __fpu_zmmh4;
- struct __darwin_ymm_reg __fpu_zmmh5;
- struct __darwin_ymm_reg __fpu_zmmh6;
- struct __darwin_ymm_reg __fpu_zmmh7;
- struct __darwin_ymm_reg __fpu_zmmh8;
- struct __darwin_ymm_reg __fpu_zmmh9;
- struct __darwin_ymm_reg __fpu_zmmh10;
- struct __darwin_ymm_reg __fpu_zmmh11;
- struct __darwin_ymm_reg __fpu_zmmh12;
- struct __darwin_ymm_reg __fpu_zmmh13;
- struct __darwin_ymm_reg __fpu_zmmh14;
- struct __darwin_ymm_reg __fpu_zmmh15;
- struct __darwin_zmm_reg __fpu_zmm16;
- struct __darwin_zmm_reg __fpu_zmm17;
- struct __darwin_zmm_reg __fpu_zmm18;
- struct __darwin_zmm_reg __fpu_zmm19;
- struct __darwin_zmm_reg __fpu_zmm20;
- struct __darwin_zmm_reg __fpu_zmm21;
- struct __darwin_zmm_reg __fpu_zmm22;
- struct __darwin_zmm_reg __fpu_zmm23;
- struct __darwin_zmm_reg __fpu_zmm24;
- struct __darwin_zmm_reg __fpu_zmm25;
- struct __darwin_zmm_reg __fpu_zmm26;
- struct __darwin_zmm_reg __fpu_zmm27;
- struct __darwin_zmm_reg __fpu_zmm28;
- struct __darwin_zmm_reg __fpu_zmm29;
- struct __darwin_zmm_reg __fpu_zmm30;
- struct __darwin_zmm_reg __fpu_zmm31;
-};
-struct __darwin_x86_exception_state64
-{
-    __uint16_t __trapno;
-    __uint16_t __cpu;
-    __uint32_t __err;
-    __uint64_t __faultvaddr;
-};
-struct __darwin_x86_debug_state64
-{
- __uint64_t __dr0;
- __uint64_t __dr1;
- __uint64_t __dr2;
- __uint64_t __dr3;
- __uint64_t __dr4;
- __uint64_t __dr5;
- __uint64_t __dr6;
- __uint64_t __dr7;
-};
-struct __darwin_x86_cpmu_state64
+struct __darwin_arm_cpmu_state64
 {
  __uint64_t __ctrs[16];
 };
@@ -1041,49 +714,15 @@ struct __darwin_x86_cpmu_state64
 
 struct __darwin_mcontext32
 {
- struct __darwin_i386_exception_state __es;
- struct __darwin_i386_thread_state __ss;
- struct __darwin_i386_float_state __fs;
-};
-
-
-struct __darwin_mcontext_avx32
-{
- struct __darwin_i386_exception_state __es;
- struct __darwin_i386_thread_state __ss;
- struct __darwin_i386_avx_state __fs;
-};
-
-
-
-struct __darwin_mcontext_avx512_32
-{
- struct __darwin_i386_exception_state __es;
- struct __darwin_i386_thread_state __ss;
- struct __darwin_i386_avx512_state __fs;
+ struct __darwin_arm_exception_state __es;
+ struct __darwin_arm_thread_state __ss;
+ struct __darwin_arm_vfp_state __fs;
 };
 struct __darwin_mcontext64
 {
- struct __darwin_x86_exception_state64 __es;
- struct __darwin_x86_thread_state64 __ss;
- struct __darwin_x86_float_state64 __fs;
-};
-
-
-struct __darwin_mcontext_avx64
-{
- struct __darwin_x86_exception_state64 __es;
- struct __darwin_x86_thread_state64 __ss;
- struct __darwin_x86_avx_state64 __fs;
-};
-
-
-
-struct __darwin_mcontext_avx512_64
-{
- struct __darwin_x86_exception_state64 __es;
- struct __darwin_x86_thread_state64 __ss;
- struct __darwin_x86_avx512_state64 __fs;
+ struct __darwin_arm_exception_state64 __es;
+ struct __darwin_arm_thread_state64 __ss;
+ struct __darwin_arm_neon_state64 __ns;
 };
 typedef struct __darwin_mcontext64 *mcontext_t;
 
@@ -1185,40 +824,6 @@ struct sigstack {
 extern "C" {
     void(*signal(int, void (*)(int)))(int);
 }
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long long uint64_t;
-
-
-typedef int8_t int_least8_t;
-typedef int16_t int_least16_t;
-typedef int32_t int_least32_t;
-typedef int64_t int_least64_t;
-typedef uint8_t uint_least8_t;
-typedef uint16_t uint_least16_t;
-typedef uint32_t uint_least32_t;
-typedef uint64_t uint_least64_t;
-
-
-
-typedef int8_t int_fast8_t;
-typedef int16_t int_fast16_t;
-typedef int32_t int_fast32_t;
-typedef int64_t int_fast64_t;
-typedef uint8_t uint_fast8_t;
-typedef uint16_t uint_fast16_t;
-typedef uint32_t uint_fast32_t;
-typedef uint64_t uint_fast64_t;
-typedef long int intmax_t;
-typedef long unsigned int uintmax_t;
-
-
-
-
-
-
-
 struct timeval
 {
  __darwin_time_t tv_sec;
@@ -2062,21 +1667,11 @@ inline __attribute__ ((__always_inline__)) int __inline_signbitd(double __x) {
     __u.__f = __x;
     return (int)(__u.__u >> 63);
 }
-
 inline __attribute__ ((__always_inline__)) int __inline_signbitl(long double __x) {
-    union {
-        long double __ld;
-        struct{ unsigned long long __m; unsigned short __sexp; } __p;
-    } __u;
-    __u.__ld = __x;
-    return (int)(__u.__p.__sexp >> 15);
+    union { long double __f; unsigned long long __u;} __u;
+    __u.__f = __x;
+    return (int)(__u.__u >> 63);
 }
-
-
-
-
-
-
 
 inline __attribute__ ((__always_inline__)) int __inline_isnormalf(float __x) {
     return __inline_isfinitef(__x) && __builtin_fabsf(__x) >= 1.17549435e-38F;
@@ -2085,7 +1680,7 @@ inline __attribute__ ((__always_inline__)) int __inline_isnormald(double __x) {
     return __inline_isfinited(__x) && __builtin_fabs(__x) >= 2.2250738585072014e-308;
 }
 inline __attribute__ ((__always_inline__)) int __inline_isnormall(long double __x) {
-    return __inline_isfinitel(__x) && __builtin_fabsl(__x) >= 3.36210314311209350626e-4932L;
+    return __inline_isfinitel(__x) && __builtin_fabsl(__x) >= 2.2250738585072014e-308L;
 }
 extern float acosf(float);
 extern double acos(double);
@@ -2412,8 +2007,13 @@ __attribute__((availability(macos,introduced=10.0,deprecated=10.9,replacement="t
 extern double significand(double)
 __attribute__((availability(macos,introduced=10.0,deprecated=10.9,message="Use `2*frexp( )` or `scalbn(x, -ilogb(x))` instead."))) __attribute__((availability(ios,unavailable))) __attribute__((availability(watchos,unavailable))) __attribute__((availability(tvos,unavailable)));
 }
-typedef int jmp_buf[((9 * 2) + 3 + 16)];
-typedef int sigjmp_buf[((9 * 2) + 3 + 16) + 1];
+typedef int jmp_buf[((14 + 8 + 2) * 2)];
+typedef int sigjmp_buf[((14 + 8 + 2) * 2) + 1];
+
+
+
+
+
 extern "C" {
 extern int setjmp(jmp_buf);
 extern void longjmp(jmp_buf, int) __attribute__((noreturn));
@@ -2468,15 +2068,6 @@ int sigblock(int);
 int sigsetmask(int);
 int sigvec(int, struct sigvec *, struct sigvec *);
 
-}
-
-
-
-
-inline __attribute__ ((__always_inline__)) int
-__sigbits(int __signo)
-{
-    return __signo > 32 ? 0 : (1 << (__signo - 1));
 }
 typedef long int ptrdiff_t;
 typedef __darwin_va_list va_list;
@@ -3766,82 +3357,6 @@ extern void CFBitVectorSetBitAtIndex(CFMutableBitVectorRef bv, CFIndex idx, CFBi
 extern void CFBitVectorSetBits(CFMutableBitVectorRef bv, CFRange range, CFBit value);
 extern void CFBitVectorSetAllBits(CFMutableBitVectorRef bv, CFBit value);
 
-}
-
-
-
-static __inline__
-uint16_t
-OSReadSwapInt16(
- const volatile void * base,
- uintptr_t byteOffset
- )
-{
- uint16_t result;
-
- result = *(volatile uint16_t *)((uintptr_t)base + byteOffset);
- return _OSSwapInt16(result);
-}
-
-static __inline__
-uint32_t
-OSReadSwapInt32(
- const volatile void * base,
- uintptr_t byteOffset
- )
-{
- uint32_t result;
-
- result = *(volatile uint32_t *)((uintptr_t)base + byteOffset);
- return _OSSwapInt32(result);
-}
-
-static __inline__
-uint64_t
-OSReadSwapInt64(
- const volatile void * base,
- uintptr_t byteOffset
- )
-{
- uint64_t result;
-
- result = *(volatile uint64_t *)((uintptr_t)base + byteOffset);
- return _OSSwapInt64(result);
-}
-
-
-
-static __inline__
-void
-OSWriteSwapInt16(
- volatile void * base,
- uintptr_t byteOffset,
- uint16_t data
- )
-{
- *(volatile uint16_t *)((uintptr_t)base + byteOffset) = _OSSwapInt16(data);
-}
-
-static __inline__
-void
-OSWriteSwapInt32(
- volatile void * base,
- uintptr_t byteOffset,
- uint32_t data
- )
-{
- *(volatile uint32_t *)((uintptr_t)base + byteOffset) = _OSSwapInt32(data);
-}
-
-static __inline__
-void
-OSWriteSwapInt64(
- volatile void * base,
- uintptr_t byteOffset,
- uint64_t data
- )
-{
- *(volatile uint64_t *)((uintptr_t)base + byteOffset) = _OSSwapInt64(data);
 }
 enum {
  OSUnknownByteOrder,
@@ -6693,7 +6208,7 @@ void CFURLStopAccessingSecurityScopedResource(CFURLRef url) __attribute__((avail
 
 
 }
-typedef unsigned int boolean_t;
+typedef int boolean_t;
 typedef __darwin_natural_t natural_t;
 typedef int integer_t;
 
@@ -6704,6 +6219,7 @@ typedef int integer_t;
 
 typedef uintptr_t vm_offset_t;
 typedef uintptr_t vm_size_t;
+
 typedef uint64_t mach_vm_address_t;
 typedef uint64_t mach_vm_offset_t;
 typedef uint64_t mach_vm_size_t;
@@ -6711,8 +6227,11 @@ typedef uint64_t mach_vm_size_t;
 typedef uint64_t vm_map_offset_t;
 typedef uint64_t vm_map_address_t;
 typedef uint64_t vm_map_size_t;
+typedef uint32_t vm32_offset_t;
+typedef uint32_t vm32_address_t;
+typedef uint32_t vm32_size_t;
 
-typedef mach_vm_address_t mach_port_context_t;
+typedef vm_offset_t mach_port_context_t;
 typedef natural_t mach_port_name_t;
 typedef mach_port_name_t *mach_port_name_array_t;
 typedef __darwin_mach_port_t mach_port_t;
@@ -13639,6 +13158,13 @@ typedef struct {} _objc_exc_NSArray;
 
 
 #pragma clang assume_nonnull begin
+
+
+
+
+
+
+
 typedef NSString * NSCalendarIdentifier __attribute__((swift_wrapper(struct)));
 
 extern "C" NSCalendarIdentifier const NSCalendarIdentifierGregorian __attribute__((availability(macos,introduced=10.6))) __attribute__((availability(ios,introduced=4.0))) __attribute__((availability(watchos,introduced=2.0))) __attribute__((availability(tvos,introduced=9.0)));
@@ -14823,6 +14349,14 @@ typedef struct {} _objc_exc_NSString;
 
 
 #pragma clang assume_nonnull begin
+
+
+
+
+
+
+
+
 
 #ifndef _REWRITER_typedef_NSDateFormatter
 #define _REWRITER_typedef_NSDateFormatter
@@ -21433,50 +20967,6 @@ struct NSMessagePort_IMPL {
 	id _delegate;
 };
 
-
-/* @end */
-
-
-
-
-
-
-
-
-#ifndef _REWRITER_typedef_NSSocketPort
-#define _REWRITER_typedef_NSSocketPort
-typedef struct objc_object NSSocketPort;
-typedef struct {} _objc_exc_NSSocketPort;
-#endif
-
-struct NSSocketPort_IMPL {
-	struct NSPort_IMPL NSPort_IVARS;
-	void *_receiver;
-	id _connectors;
-	void *_loops;
-	void *_data;
-	id _signature;
-	id _delegate;
-	id _lock;
-	NSUInteger _maxSize;
-	NSUInteger _useCount;
-	NSUInteger _reserved;
-};
-
-
-// - (instancetype)init;
-// - (nullable instancetype)initWithTCPPort:(unsigned short)port;
-// - (nullable instancetype)initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address __attribute__((objc_designated_initializer));
-// - (nullable instancetype)initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol socket:(NSSocketNativeHandle)sock __attribute__((objc_designated_initializer));
-// - (nullable instancetype)initRemoteWithTCPPort:(unsigned short)port host:(nullable NSString *)hostName;
-// - (instancetype)initRemoteWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address __attribute__((objc_designated_initializer));
-
-
-// @property (readonly) int protocolFamily;
-// @property (readonly) int socketType;
-// @property (readonly) int protocol;
-// @property (readonly, copy) NSData *address;
-// @property (readonly) NSSocketNativeHandle socket;
 
 /* @end */
 
@@ -33150,8 +32640,10 @@ typedef struct objc_object TestClang;
 typedef struct {} _objc_exc_TestClang;
 #endif
 
+extern "C" unsigned long OBJC_IVAR_$_TestClang$_value;
 struct TestClang_IMPL {
 	struct NSObject_IMPL NSObject_IVARS;
+	NSInteger _value;
 };
 
 // + (void)testBlcok;
@@ -33159,6 +32651,10 @@ struct TestClang_IMPL {
 
 #pragma clang assume_nonnull end
 static int numGlobel = 29;
+// @interface TestClang()
+// @property(nonatomic, assign) NSInteger value;
+/* @end */
+
 // @implementation TestClang
 struct __Block_byref_numBlock_0 {
   void *__isa;
@@ -33185,7 +32681,8 @@ __Block_byref_numBlockTest_2 *__forwarding;
 struct __TestClang__testBlcok_block_impl_0 {
   struct __block_impl impl;
   struct __TestClang__testBlcok_block_desc_0* Desc;
-  __TestClang__testBlcok_block_impl_0(void *fp, struct __TestClang__testBlcok_block_desc_0 *desc, int flags=0) {
+  TestClang *test;
+  __TestClang__testBlcok_block_impl_0(void *fp, struct __TestClang__testBlcok_block_desc_0 *desc, TestClang *_test, int flags=0) : test(_test) {
     impl.isa = &_NSConcreteStackBlock;
     impl.Flags = flags;
     impl.FuncPtr = fp;
@@ -33193,24 +32690,31 @@ struct __TestClang__testBlcok_block_impl_0 {
   }
 };
 static void __TestClang__testBlcok_block_func_0(struct __TestClang__testBlcok_block_impl_0 *__cself) {
+  TestClang *test = __cself->test; // bound by copy
 
-        NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_0);
-            }
+        NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_0,(long)((NSInteger (*)(id, SEL))(void *)objc_msgSend)((id)test, sel_registerName("value")));
+    }
+static void __TestClang__testBlcok_block_copy_0(struct __TestClang__testBlcok_block_impl_0*dst, struct __TestClang__testBlcok_block_impl_0*src) {_Block_object_assign((void*)&dst->test, (void*)src->test, 3/*BLOCK_FIELD_IS_OBJECT*/);}
+
+static void __TestClang__testBlcok_block_dispose_0(struct __TestClang__testBlcok_block_impl_0*src) {_Block_object_dispose((void*)src->test, 3/*BLOCK_FIELD_IS_OBJECT*/);}
 
 static struct __TestClang__testBlcok_block_desc_0 {
   size_t reserved;
   size_t Block_size;
-} __TestClang__testBlcok_block_desc_0_DATA = { 0, sizeof(struct __TestClang__testBlcok_block_impl_0)};
+  void (*copy)(struct __TestClang__testBlcok_block_impl_0*, struct __TestClang__testBlcok_block_impl_0*);
+  void (*dispose)(struct __TestClang__testBlcok_block_impl_0*);
+} __TestClang__testBlcok_block_desc_0_DATA = { 0, sizeof(struct __TestClang__testBlcok_block_impl_0), __TestClang__testBlcok_block_copy_0, __TestClang__testBlcok_block_dispose_0};
 
 struct __TestClang__testBlcok_block_impl_1 {
   struct __block_impl impl;
   struct __TestClang__testBlcok_block_desc_1* Desc;
   int num;
   int *numStatic;
+  TestClang *test;
   __Block_byref_numBlock_0 *numBlock; // by ref
   __Block_byref_numBlock2_1 *numBlock2; // by ref
   __Block_byref_numBlockTest_2 *numBlockTest; // by ref
-  __TestClang__testBlcok_block_impl_1(void *fp, struct __TestClang__testBlcok_block_desc_1 *desc, int _num, int *_numStatic, __Block_byref_numBlock_0 *_numBlock, __Block_byref_numBlock2_1 *_numBlock2, __Block_byref_numBlockTest_2 *_numBlockTest, int flags=0) : num(_num), numStatic(_numStatic), numBlock(_numBlock->__forwarding), numBlock2(_numBlock2->__forwarding), numBlockTest(_numBlockTest->__forwarding) {
+  __TestClang__testBlcok_block_impl_1(void *fp, struct __TestClang__testBlcok_block_desc_1 *desc, int _num, int *_numStatic, TestClang *_test, __Block_byref_numBlock_0 *_numBlock, __Block_byref_numBlock2_1 *_numBlock2, __Block_byref_numBlockTest_2 *_numBlockTest, int flags=0) : num(_num), numStatic(_numStatic), test(_test), numBlock(_numBlock->__forwarding), numBlock2(_numBlock2->__forwarding), numBlockTest(_numBlockTest->__forwarding) {
     impl.isa = &_NSConcreteStackBlock;
     impl.Flags = flags;
     impl.FuncPtr = fp;
@@ -33223,13 +32727,16 @@ static void __TestClang__testBlcok_block_func_1(struct __TestClang__testBlcok_bl
   __Block_byref_numBlockTest_2 *numBlockTest = __cself->numBlockTest; // bound by ref
   int num = __cself->num; // bound by copy
   int *numStatic = __cself->numStatic; // bound by copy
+  TestClang *test = __cself->test; // bound by copy
 
 
-        NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_2, num,(*numStatic),numGlobel,(numBlock->__forwarding->numBlock),(numBlock2->__forwarding->numBlock2),(numBlockTest->__forwarding->numBlockTest));
-            }
-static void __TestClang__testBlcok_block_copy_1(struct __TestClang__testBlcok_block_impl_1*dst, struct __TestClang__testBlcok_block_impl_1*src) {_Block_object_assign((void*)&dst->numBlock, (void*)src->numBlock, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_assign((void*)&dst->numBlock2, (void*)src->numBlock2, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_assign((void*)&dst->numBlockTest, (void*)src->numBlockTest, 8/*BLOCK_FIELD_IS_BYREF*/);}
+        NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_2, num,(*numStatic),numGlobel,(numBlock->__forwarding->numBlock),(numBlock2->__forwarding->numBlock2),(numBlockTest->__forwarding->numBlockTest));
 
-static void __TestClang__testBlcok_block_dispose_1(struct __TestClang__testBlcok_block_impl_1*src) {_Block_object_dispose((void*)src->numBlock, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_dispose((void*)src->numBlock2, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_dispose((void*)src->numBlockTest, 8/*BLOCK_FIELD_IS_BYREF*/);}
+        NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_3,(long)((NSInteger (*)(id, SEL))(void *)objc_msgSend)((id)test, sel_registerName("value")));
+    }
+static void __TestClang__testBlcok_block_copy_1(struct __TestClang__testBlcok_block_impl_1*dst, struct __TestClang__testBlcok_block_impl_1*src) {_Block_object_assign((void*)&dst->numBlock, (void*)src->numBlock, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_assign((void*)&dst->numBlock2, (void*)src->numBlock2, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_assign((void*)&dst->numBlockTest, (void*)src->numBlockTest, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_assign((void*)&dst->test, (void*)src->test, 3/*BLOCK_FIELD_IS_OBJECT*/);}
+
+static void __TestClang__testBlcok_block_dispose_1(struct __TestClang__testBlcok_block_impl_1*src) {_Block_object_dispose((void*)src->numBlock, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_dispose((void*)src->numBlock2, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_dispose((void*)src->numBlockTest, 8/*BLOCK_FIELD_IS_BYREF*/);_Block_object_dispose((void*)src->test, 3/*BLOCK_FIELD_IS_OBJECT*/);}
 
 static struct __TestClang__testBlcok_block_desc_1 {
   size_t reserved;
@@ -33240,26 +32747,34 @@ static struct __TestClang__testBlcok_block_desc_1 {
 
 static void _C_TestClang_testBlcok(Class self, SEL _cmd) {
 
-    void(*block1)(void) = ((void (*)())&__TestClang__testBlcok_block_impl_0((void *)__TestClang__testBlcok_block_func_0, &__TestClang__testBlcok_block_desc_0_DATA));
-    NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_1, block1);
+    TestClang *test = ((TestClang *(*)(id, SEL))(void *)objc_msgSend)((id)((TestClang *(*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass("TestClang"), sel_registerName("alloc")), sel_registerName("init"));
+    ((void (*)(id, SEL, NSInteger))(void *)objc_msgSend)((id)test, sel_registerName("setValue:"), (NSInteger)10);
+    void(*block1)(void) = ((void (*)())&__TestClang__testBlcok_block_impl_0((void *)__TestClang__testBlcok_block_func_0, &__TestClang__testBlcok_block_desc_0_DATA, test, 570425344));
+    NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_1, block1);
+    ((void (*)(__block_impl *))((__block_impl *)block1)->FuncPtr)((__block_impl *)block1);
 
 
 
 
     static int numStatic = 12;
-    int num = 10;
+
+    int num = 10;
+
     __attribute__((__blocks__(byref))) __Block_byref_numBlock_0 numBlock = {(void*)0,(__Block_byref_numBlock_0 *)&numBlock, 0, sizeof(__Block_byref_numBlock_0), 19};
     __attribute__((__blocks__(byref))) __Block_byref_numBlock2_1 numBlock2 = {(void*)0,(__Block_byref_numBlock2_1 *)&numBlock2, 0, sizeof(__Block_byref_numBlock2_1), 30};
     __attribute__((__blocks__(byref))) __Block_byref_numBlockTest_2 numBlockTest = {(void*)0,(__Block_byref_numBlockTest_2 *)&numBlockTest, 0, sizeof(__Block_byref_numBlockTest_2), 30};
 
-        void(*block2)(void) = ((void (*)())&__TestClang__testBlcok_block_impl_1((void *)__TestClang__testBlcok_block_func_1, &__TestClang__testBlcok_block_desc_1_DATA, num, &numStatic, (__Block_byref_numBlock_0 *)&numBlock, (__Block_byref_numBlock2_1 *)&numBlock2, (__Block_byref_numBlockTest_2 *)&numBlockTest, 570425344));
+    void(*block2)(void) = ((void (*)())&__TestClang__testBlcok_block_impl_1((void *)__TestClang__testBlcok_block_func_1, &__TestClang__testBlcok_block_desc_1_DATA, num, &numStatic, test, (__Block_byref_numBlock_0 *)&numBlock, (__Block_byref_numBlock2_1 *)&numBlock2, (__Block_byref_numBlockTest_2 *)&numBlockTest, 570425344));
     num = 33;
     numStatic = 121;
     numGlobel = 129;
     (numBlock.__forwarding->numBlock) = 22222;
     ((void (*)(__block_impl *))((__block_impl *)block2)->FuncPtr)((__block_impl *)block2);
-    NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_d94e42_mi_3, block2);
+    NSLog((NSString *)&__NSConstantStringImpl__var_folders_nc_qvb_bh854tz1y0p1hdk5y6km0000gn_T_TestClang_a39fc5_mi_4, block2);
 }
+
+static NSInteger _I_TestClang_value(TestClang * self, SEL _cmd) { return (*(NSInteger *)((char *)self + OBJC_IVAR_$_TestClang$_value)); }
+static void _I_TestClang_setValue_(TestClang * self, SEL _cmd, NSInteger value) { (*(NSInteger *)((char *)self + OBJC_IVAR_$_TestClang$_value)) = value; }
 // @end
 
 struct _prop_t {
@@ -33301,7 +32816,6 @@ struct _class_ro_t {
 	unsigned int flags;
 	unsigned int instanceStart;
 	unsigned int instanceSize;
-	unsigned int reserved;
 	const unsigned char *ivarLayout;
 	const char *name;
 	const struct _method_list_t *baseMethods;
@@ -33330,6 +32844,29 @@ struct _category_t {
 extern "C" __declspec(dllimport) struct objc_cache _objc_empty_cache;
 #pragma warning(disable:4273)
 
+extern "C" unsigned long int OBJC_IVAR_$_TestClang$_value __attribute__ ((used, section ("__DATA,__objc_ivar"))) = __OFFSETOFIVAR__(struct TestClang, _value);
+
+static struct /*_ivar_list_t*/ {
+	unsigned int entsize;  // sizeof(struct _prop_t)
+	unsigned int count;
+	struct _ivar_t ivar_list[1];
+} _OBJC_$_INSTANCE_VARIABLES_TestClang __attribute__ ((used, section ("__DATA,__objc_const"))) = {
+	sizeof(_ivar_t),
+	1,
+	{{(unsigned long int *)&OBJC_IVAR_$_TestClang$_value, "_value", "q", 3, 8}}
+};
+
+static struct /*_method_list_t*/ {
+	unsigned int entsize;  // sizeof(struct _objc_method)
+	unsigned int method_count;
+	struct _objc_method method_list[2];
+} _OBJC_$_INSTANCE_METHODS_TestClang __attribute__ ((used, section ("__DATA,__objc_const"))) = {
+	sizeof(_objc_method),
+	2,
+	{{(struct objc_selector *)"value", "q16@0:8", (void *)_I_TestClang_value},
+	{(struct objc_selector *)"setValue:", "v24@0:8q16", (void *)_I_TestClang_setValue_}}
+};
+
 static struct /*_method_list_t*/ {
 	unsigned int entsize;  // sizeof(struct _objc_method)
 	unsigned int method_count;
@@ -33342,7 +32879,6 @@ static struct /*_method_list_t*/ {
 
 static struct _class_ro_t _OBJC_METACLASS_RO_$_TestClang __attribute__ ((used, section ("__DATA,__objc_const"))) = {
 	1, sizeof(struct _class_t), sizeof(struct _class_t), 
-	(unsigned int)0, 
 	0, 
 	"TestClang",
 	(const struct _method_list_t *)&_OBJC_$_CLASS_METHODS_TestClang,
@@ -33353,13 +32889,12 @@ static struct _class_ro_t _OBJC_METACLASS_RO_$_TestClang __attribute__ ((used, s
 };
 
 static struct _class_ro_t _OBJC_CLASS_RO_$_TestClang __attribute__ ((used, section ("__DATA,__objc_const"))) = {
-	0, sizeof(struct TestClang_IMPL), sizeof(struct TestClang_IMPL), 
-	(unsigned int)0, 
+	0, __OFFSETOFIVAR__(struct TestClang, _value), sizeof(struct TestClang_IMPL), 
 	0, 
 	"TestClang",
+	(const struct _method_list_t *)&_OBJC_$_INSTANCE_METHODS_TestClang,
 	0, 
-	0, 
-	0, 
+	(const struct _ivar_list_t *)&_OBJC_$_INSTANCE_VARIABLES_TestClang,
 	0, 
 	0, 
 };

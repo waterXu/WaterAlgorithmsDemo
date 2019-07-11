@@ -32,6 +32,7 @@
                          @{@"name":@"powerOfFour",@"function":@"powerOfFour"},
                          @{@"name":@"addBinary",@"function":@"addBinary"},
                          @{@"name":@"XORTest",@"function":@"XORTest"},
+                         @{@"name":@"romanToInteger",@"function":@"romanToInteger"},
                          @{@"name":@"斐波那契数列",@"function":@"feibonaqi"},
                          ],
                          //Stack

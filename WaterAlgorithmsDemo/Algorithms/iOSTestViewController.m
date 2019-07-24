@@ -62,6 +62,7 @@ static char TestdynamicKey;
                          @{@"name":@"test block property",@"function":@"testBlcokProperty"},
                          @{@"name":@"test block property invoke",@"function":@"testBlcokPropertyInvoke"},
                          @{@"name":@"conCurrentQueueAsync 并行异步",@"function":@"conCurrentQueueAsync"},
+                         @{@"name":@"conCurrentQueueTest 线程安全测试",@"function":@"conCurrentQueueSafeTest"},
                          @{@"name":@"serialQueueAsync 串行异步",@"function":@"serialQueueAsync"},
                          @{@"name":@"serialQueueSync 串行同步",@"function":@"serialQueueSync"},
                          @{@"name":@"serialQueueAsyncAddSync 串行异步嵌套同步",@"function":@"serialQueueAsyncAddSync"},
@@ -545,8 +546,47 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     });
     NSLog(@"---end--- %s",__FUNCTION__);
     
-    
 }
+
+static int a = 0;
+
+- (void)conCurrentQueueSafeTest {
+    //并发队列
+    dispatch_queue_t queue = dispatch_queue_create("testConcurrentQueueAsync", DISPATCH_QUEUE_CONCURRENT);
+//    dispatch_queue_t queue2 = dispatch_queue_create("testConcurrentQueueAsync2", DISPATCH_QUEUE_CONCURRENT);
+//    NSLog(@"---start--- %s",__FUNCTION__);
+//    for (int i = 0; i<100; i++) {
+//        dispatch_async(queue, ^{
+//            a++;
+//            NSLog(@"----> %s thread = %d a = %d",__FUNCTION__,i,a);
+//        });
+//    }
+//    sleep(2);
+//    NSLog(@"----> %s a = %d",__FUNCTION__,a);
+    
+    NSMutableArray *array = [NSMutableArray array];
+    [array addObject:@1];
+    [array addObject:@2];
+    [array addObject:@3];
+    dispatch_async(queue, ^{
+        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSLog(@"----> array enumerateObjectsUsingBlock obj = %@",obj);
+        }];
+        
+        for (int i =0 ; i < array.count; i++) {
+             NSLog(@"----> array enumerateObjectsUsingBlock array index = %@",array[i]);
+        }
+    });
+    
+    dispatch_async(queue, ^{
+        for (int j =0 ; j<10; j++) {
+            [array addObject:@(3 + j)];
+            sleep(0.2);
+            NSLog(@"----> array addObject");
+        }
+    });
+}
+
 - (void)serialQueueAsync {
     //串行队列
     dispatch_queue_t queue = dispatch_queue_create("testSerialQueueAsync", DISPATCH_QUEUE_SERIAL);

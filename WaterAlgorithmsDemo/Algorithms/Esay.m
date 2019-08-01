@@ -17,7 +17,7 @@
     NSString *selString = NSStringFromSelector(sel);
     NSLog(@"---> sel = %@",selString);
     Class metaClass = objc_getMetaClass(class_getName(self));
-    SEL ovverideSel = @selector(repleaceFunc);
+    SEL ovverideSel = @selector(repleaceFuncOne);
     Method ovverideMethod = class_getClassMethod(metaClass, ovverideSel);
     
     if(class_addMethod(metaClass, sel, method_getImplementation(ovverideMethod), method_getTypeEncoding(ovverideMethod))){
@@ -53,10 +53,10 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation {
     NSLog(@"---> %s",__FUNCTION__); //不实现就不会报 doesNotRecognizeSelector
 //    [anInvocation invoke];
-    [Easy repleaceFunc];
+    [Easy repleaceFuncOne];
 }
 
-+ (void)repleaceFunc{
++ (void)repleaceFuncOne{
     NSLog(@"---> %s",__FUNCTION__);
     NSArray *testArray = @[@1,@2,@3,@4,@9];
     NSArray *resultArray = [self plusOne:testArray];

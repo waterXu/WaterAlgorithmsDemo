@@ -151,7 +151,6 @@ __weak id reference = nil;
         return;
     }
     [Easy performSelector:function];
-    
 }
 
 @end

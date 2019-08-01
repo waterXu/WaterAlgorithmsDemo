@@ -11,6 +11,7 @@
 #import <libkern/OSSpinLockDeprecated.h>
 #import <os/lock.h>
 #import <pthread.h>
+#include "fishhook.h"
 
 static char TestdynamicKey;
 @interface iOSTestViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -46,6 +47,7 @@ static char TestdynamicKey;
 - (NSArray<NSDictionary *> *)dataSoource {
     if (_dataSoource == nil) {
         _dataSoource = @[
+                         @{@"name":@"test hook c",@"function":@"testhookCfuntion"},
                          @{@"name":@"atomic VS noatomic",@"function":@"atomicVSnoatomic"},
                          @{@"name":@"unsafe_unretain __weak",@"function":@"unsafeUnRetain"},
                          @{@"name":@"TestCallTrack",@"function":@"TestCallTrack"},
@@ -112,6 +114,32 @@ static char TestdynamicKey;
     [self performSelector:function];
 }
 
+//函数指针，用来保存原始的函数地址
+static void (*old_nslog)(NSString *format, ...);
+
+void myLog(NSString *format, ...)  {
+    
+}
+
+- (void)testhookCfuntion {
+    //定义rebinding结构体
+    struct rebinding nslogBind;
+    //函数的名称
+    nslogBind.name = "NSLog";
+    //新的函数地址
+    nslogBind.replacement = myLog;
+    //保存原始函数地址变量的指针
+    nslogBind.replaced = (void *)&old_nslog;
+    
+    //定义数组
+    struct rebinding rebs[] = {nslogBind};
+    
+    /**
+     arg1: 存放rebinding结构体的数组
+     arg2: 数组的长度
+     */
+    rebind_symbols(rebs, 1);
+}
 
 - (void)unsafeUnRetain {
 //    id __weak obj1 = nil;

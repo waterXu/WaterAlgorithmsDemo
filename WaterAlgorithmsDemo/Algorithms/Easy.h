@@ -230,7 +230,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)houseRobberII;
 //最低成本走到楼梯顶部，可以依次走一两步
 + (void)minCostClimbingStair;
-//股票买卖最大利润 ，买入要早于卖出, 一次交易
+//股票买卖最大利润 ，买入要早于卖出, 一次交易 只买卖一次
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 + (void)bestTimeToBuyandSellStock;
 @end
 

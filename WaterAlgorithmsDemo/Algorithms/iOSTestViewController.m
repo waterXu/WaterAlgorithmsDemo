@@ -11,7 +11,8 @@
 #import <libkern/OSSpinLockDeprecated.h>
 #import <os/lock.h>
 #import <pthread.h>
-#include "fishhook.h"
+#import "TreeNode.h"
+#import <malloc/malloc.h>
 
 static char TestdynamicKey;
 @interface iOSTestViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -38,6 +39,8 @@ static char TestdynamicKey;
     //但是目前arc下block默认放在了堆上，所以用strong也可以
     // 如果用weak或着assign修饰会在block为__NSMallocBlock__类型时会造成野指针
 
+@property (nonatomic, strong) NSConditionLock *condLock;
+
 @end
 
 @implementation iOSTestViewController
@@ -47,7 +50,6 @@ static char TestdynamicKey;
 - (NSArray<NSDictionary *> *)dataSoource {
     if (_dataSoource == nil) {
         _dataSoource = @[
-                         @{@"name":@"test hook c",@"function":@"testhookCfuntion"},
                          @{@"name":@"atomic VS noatomic",@"function":@"atomicVSnoatomic"},
                          @{@"name":@"unsafe_unretain __weak",@"function":@"unsafeUnRetain"},
                          @{@"name":@"TestCallTrack",@"function":@"TestCallTrack"},
@@ -64,17 +66,19 @@ static char TestdynamicKey;
                          @{@"name":@"test block property",@"function":@"testBlcokProperty"},
                          @{@"name":@"test block property invoke",@"function":@"testBlcokPropertyInvoke"},
                          @{@"name":@"conCurrentQueueAsync 并行异步",@"function":@"conCurrentQueueAsync"},
-                         @{@"name":@"conCurrentQueueTest 线程安全测试",@"function":@"conCurrentQueueSafeTest"},
                          @{@"name":@"serialQueueAsync 串行异步",@"function":@"serialQueueAsync"},
                          @{@"name":@"serialQueueSync 串行同步",@"function":@"serialQueueSync"},
                          @{@"name":@"serialQueueAsyncAddSync 串行异步嵌套同步",@"function":@"serialQueueAsyncAddSync"},
                          @{@"name":@"serialQueueSyncAddAsync 串行同步嵌套异步",@"function":@"serialQueueSyncAddAsync"},
+                         @{@"name":@"优先倒置",@"function":@"priorityInverstion"},
                          @{@"name":@"锁 - osspinlink",@"function":@"osspinlink"},
                          @{@"name":@"锁 - dispatch_semaphore",@"function":@"dispatchSemaphore"},
                          @{@"name":@"锁 - pthread_mutex",@"function":@"pthreadMutex"},
                          @{@"name":@"锁 - 递归锁pthread_mutex(recursive) ",@"function":@"pthreadMutexRecursive"},
                          @{@"name":@"锁 - NSLock ",@"function":@"nslock"},
                          @{@"name":@"锁 - NSCondition ",@"function":@"nscondition"},
+                         @{@"name":@"锁 - NSConditionLock ",@"function":@"nsconditionlock"},
+                         @{@"name":@"词法分析器",@"function":@"lexicalAnalysis"},
                          ];
     }
     return _dataSoource;
@@ -88,6 +92,16 @@ static char TestdynamicKey;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
+    
+    NSObject *objc = [[NSObject alloc] init];
+    NSLog(@"objc对象实际需要的内存大小: %zd", class_getInstanceSize([objc class]));
+    NSLog(@"objc对象实际分配的内存大小: %zd", malloc_size((__bridge const void *)(objc)));
+    
+    
+    NSObject *list = [[NodeList alloc] init];
+    NSLog(@"list对象实际需要的内存大小: %zd", class_getInstanceSize([list class]));
+    NSLog(@"list对象实际分配的内存大小: %zd", malloc_size((__bridge const void *)(list)));
+
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -95,6 +109,13 @@ static char TestdynamicKey;
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.tableView reloadData];
     
+}
+
+- (void)testAutorelease {
+    @autoreleasepool {
+        NSString *str = [NSString stringWithFormat:@"xylxx"];
+    }
+//    NSLog(@"%@", str); // Console: (null)
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -114,32 +135,6 @@ static char TestdynamicKey;
     [self performSelector:function];
 }
 
-//函数指针，用来保存原始的函数地址
-static void (*old_nslog)(NSString *format, ...);
-
-void myLog(NSString *format, ...)  {
-    
-}
-
-- (void)testhookCfuntion {
-    //定义rebinding结构体
-    struct rebinding nslogBind;
-    //函数的名称
-    nslogBind.name = "NSLog";
-    //新的函数地址
-    nslogBind.replacement = myLog;
-    //保存原始函数地址变量的指针
-    nslogBind.replaced = (void *)&old_nslog;
-    
-    //定义数组
-    struct rebinding rebs[] = {nslogBind};
-    
-    /**
-     arg1: 存放rebinding结构体的数组
-     arg2: 数组的长度
-     */
-    rebind_symbols(rebs, 1);
-}
 
 - (void)unsafeUnRetain {
 //    id __weak obj1 = nil;
@@ -262,7 +257,7 @@ void myLog(NSString *format, ...)  {
 
 
 - (void)TestCallTrack {
-    //    [[NSException exceptionWithName:@"Database already in pool" reason:@"The FMDatabase being put back into the pool is already present in the pool" userInfo:nil] raise];
+        [[NSException exceptionWithName:@"Database already in pool" reason:@"The FMDatabase being put back into the pool is already present in the pool" userInfo:nil] raise];
 }
 
 - (void)atomicVSnoatomic {
@@ -561,58 +556,19 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 - (void)conCurrentQueueAsync {
     //并发队列
     dispatch_queue_t queue = dispatch_queue_create("testConcurrentQueueAsync", DISPATCH_QUEUE_CONCURRENT);
-    NSLog(@"---start--- %s",__FUNCTION__);
-    [[NSThread currentThread] setName:@"testName"];
+//    NSLog(@"---start--- %s",__FUNCTION__);
+//    [[NSThread currentThread] setName:@"testName"];
     dispatch_async(queue, ^{
         NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
-    dispatch_async(queue, ^{
-        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
-    });
+    NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+//    dispatch_async(queue, ^{
+//        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
+//    });
     dispatch_async(queue, ^{
         NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
-    NSLog(@"---end--- %s",__FUNCTION__);
-    
-}
-
-static int a = 0;
-
-- (void)conCurrentQueueSafeTest {
-    //并发队列
-    dispatch_queue_t queue = dispatch_queue_create("testConcurrentQueueAsync", DISPATCH_QUEUE_CONCURRENT);
-//    dispatch_queue_t queue2 = dispatch_queue_create("testConcurrentQueueAsync2", DISPATCH_QUEUE_CONCURRENT);
-//    NSLog(@"---start--- %s",__FUNCTION__);
-//    for (int i = 0; i<100; i++) {
-//        dispatch_async(queue, ^{
-//            a++;
-//            NSLog(@"----> %s thread = %d a = %d",__FUNCTION__,i,a);
-//        });
-//    }
-//    sleep(2);
-//    NSLog(@"----> %s a = %d",__FUNCTION__,a);
-    
-    NSMutableArray *array = [NSMutableArray array];
-    [array addObject:@1];
-    [array addObject:@2];
-    [array addObject:@3];
-    dispatch_async(queue, ^{
-        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            NSLog(@"----> array enumerateObjectsUsingBlock obj = %@",obj);
-        }];
-        
-        for (int i =0 ; i < array.count; i++) {
-             NSLog(@"----> array enumerateObjectsUsingBlock array index = %@",array[i]);
-        }
-    });
-    
-    dispatch_async(queue, ^{
-        for (int j =0 ; j<10; j++) {
-            [array addObject:@(3 + j)];
-            sleep(0.2);
-            NSLog(@"----> array addObject");
-        }
-    });
+    NSLog(@"---4--- %s",__FUNCTION__);
 }
 
 - (void)serialQueueAsync {
@@ -631,8 +587,6 @@ static int a = 0;
         NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
     NSLog(@"---end--- %s",__FUNCTION__);
-    
-    
 }
 
 - (void)serialQueueSync {
@@ -652,12 +606,14 @@ static int a = 0;
     NSLog(@"---end--- %s",__FUNCTION__);
 }
 - (void)serialQueueAsyncAddSync {
+//    dispatch_get_main_queue();  主线程队列为串行队列
     //串行队列
     dispatch_queue_t queue = dispatch_queue_create("testSerialQueue", DISPATCH_QUEUE_SERIAL);
     NSLog(@"---start--- %s",__FUNCTION__);
     [[NSThread currentThread] setName:@"testName"];
     dispatch_async(queue, ^{
         NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
+        //这里会造成死锁，因为队列线程在运行异步操作，而同步操作进入队列后将等待异步操作的完成，但是异步操作要完成需要等待同步操作完成，相互等待，造成死锁
         dispatch_sync(queue, ^{
             NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
         });
@@ -727,6 +683,46 @@ static int a = 0;
 //    2019-07-01 14:35:56.796211+0800 WaterAlgorithmsDemo[11339:307020] 线程2
 //    2019-07-01 14:35:56.796454+0800 WaterAlgorithmsDemo[11339:307020] 线程2 解锁成功
 }
+//优先倒置
+- (void)priorityInverstion {
+//    dispatch_queue_global_t highPriotity = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+//    dispatch_queue_global_t lowPriotity = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);
+
+    
+
+    dispatch_queue_attr_t highQueueAttributes = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_USER_INITIATED, -1);
+      dispatch_queue_t highPriotity = dispatch_queue_create("highPriotity", highQueueAttributes);
+    dispatch_queue_attr_t lowQueueAttributes = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, QOS_CLASS_UTILITY, -1);
+     dispatch_queue_t lowPriotity = dispatch_queue_create("lowPriotity", lowQueueAttributes);
+    
+//    static pthread_mutex_t pLock;
+//    pthread_mutex_init(&pLock, NULL);
+    dispatch_semaphore_t signal = dispatch_semaphore_create(1); //传入值必须 >=0,
+    dispatch_time_t overTime = dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC);
+    dispatch_async(lowPriotity, ^{
+        dispatch_semaphore_wait(signal, overTime);
+//pthread_mutex_lock(&pLock);
+        NSLog(@"----- lowPriotity -----");
+        for (int i = 0; i < 10; i++) {
+            NSLog(@"----- %d -----", i);
+        }
+//        pthread_mutex_unlock(&pLock);
+        dispatch_semaphore_signal(signal);
+    });
+    
+    dispatch_async(highPriotity, ^{
+        dispatch_semaphore_wait(signal, overTime);
+        
+//        pthread_mutex_lock(&pLock);
+        NSLog(@"----- highPriotity -----");
+        for (int i = 11; i < 20; i++) {
+            NSLog(@"----- %d -----", i);
+        }
+//        pthread_mutex_unlock(&pLock);
+        dispatch_semaphore_signal(signal);
+    });
+}
+
 - (void)dispatchSemaphore {
     //dispatch_semaphore_t 是一种更细粒度的锁
     dispatch_semaphore_t signal = dispatch_semaphore_create(1); //传入值必须 >=0, 若传入为0则阻塞线程并等待timeout,时间到后会执行其后的语句
@@ -893,6 +889,43 @@ static int a = 0;
 //    2019-07-01 19:13:55.623000+0800 WaterAlgorithmsDemo[23646:763722] 线程2
 }
 
+#define NO_DATA  0
+#define HAS_DATA 1
+static int producerLimit = 10;
+
+- (void)nsconditionlock {
+    _condLock = [[NSConditionLock alloc] initWithCondition:0];
+    [[[NSThread alloc] initWithTarget:self  selector:@selector(producer) object:nil] start];
+    [[[NSThread alloc] initWithTarget:self  selector:@selector(consumer) object:nil] start];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+        producerLimit++;
+    }];
+    [timer fire];
+}
+
+- (void)producer
+{
+    static int product = 0;
+    while(product < producerLimit){
+        [_condLock lockWhenCondition:NO_DATA];
+        NSLog(@"Produce..");
+        [_condLock unlockWithCondition:HAS_DATA];;
+        product++ ;
+    }
+}
+
+- (void)consumer
+{
+    while(true){
+        [_condLock lockWhenCondition:HAS_DATA];
+        NSLog(@"Comsume..");
+        [_condLock unlockWithCondition:NO_DATA];
+    }
+}
+
+- (void)lexicalAnalysis {
+    
+}
 
 @end
 

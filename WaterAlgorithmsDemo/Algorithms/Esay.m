@@ -17,7 +17,7 @@
     NSString *selString = NSStringFromSelector(sel);
     NSLog(@"---> sel = %@",selString);
     Class metaClass = objc_getMetaClass(class_getName(self));
-    SEL ovverideSel = @selector(repleaceFuncOne);
+    SEL ovverideSel = @selector(repleaceFunc);
     Method ovverideMethod = class_getClassMethod(metaClass, ovverideSel);
     
     if(class_addMethod(metaClass, sel, method_getImplementation(ovverideMethod), method_getTypeEncoding(ovverideMethod))){
@@ -53,10 +53,10 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation {
     NSLog(@"---> %s",__FUNCTION__); //不实现就不会报 doesNotRecognizeSelector
 //    [anInvocation invoke];
-    [Easy repleaceFuncOne];
+    [Easy repleaceFunc];
 }
 
-+ (void)repleaceFuncOne{
++ (void)repleaceFunc{
     NSLog(@"---> %s",__FUNCTION__);
     NSArray *testArray = @[@1,@2,@3,@4,@9];
     NSArray *resultArray = [self plusOne:testArray];
@@ -1142,27 +1142,32 @@
 }
 
 + (void)mergeTwoSortedLists {
-    NSArray *numbers = @[@1,@2,@4];
+    NSArray *numbers = @[@1,@2,@4,@5];
     NodeList *sorteHead1 = [self creatNodelist:numbers];
     NSArray *numbers1 = @[@1,@3,@4];
     NodeList *sorteHead2 = [self creatNodelist:numbers1];
-    NodeList *post1 = sorteHead1;
-    NodeList *post2 = sorteHead2;
-    NodeList *dummy = [[NodeList alloc] initWithValue:0];
-    NodeList *node = dummy;
-    while (post1 || post1) {
-        if(post1.val <= post2.val){
-            node.next = post1;
-            post1 = post1.next;
-        } else {
-            node.next = post2;
-            post2 = post2.next;
-        }
-        node = node.next;
-    }
-    node.next = post1 ? post1 : post2;
-    NSLog(@"-----> %s,numbers = %@ merge numbers1 = %@ lists= %@",__FUNCTION__,sorteHead1,sorteHead2,dummy.next);
+    NSLog(@"-----> %s,numbers1 = %@ merge numbers2 = %@",__FUNCTION__,sorteHead1,sorteHead2);
+    NodeList *mergeList = [self mergeTwoSortedLists:sorteHead1 list2:sorteHead2];
+    NSLog(@"-----> %s,numbers = %@ merge numbers1 = %@ lists= %@",__FUNCTION__,sorteHead1,sorteHead2,mergeList);
 }
+
++ (NodeList *)mergeTwoSortedLists:(NodeList *)list1 list2:(NodeList *)list2 {\
+    NodeList *dummy = [[NodeList alloc] init];
+    NodeList *temp = dummy;
+    while (list1 && list2) {
+        if (list1.val <= list2.val) {
+            dummy.next = list1;
+            list1 = list1.next;
+        } else {
+            dummy.next = list2;
+            list2 = list2.next;
+        }
+        dummy = dummy.next;
+    }
+    dummy.next = list1 ? list1 : list2;
+    return temp.next;
+}
+
 
 + (void)findLastIndexNode {
     NSArray *numbers = @[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10];

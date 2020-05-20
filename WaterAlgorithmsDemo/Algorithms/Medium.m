@@ -331,7 +331,8 @@ static NSInteger times = 0;
 //股票买卖最大利润 ，买入要早于卖出 ,可以多次交易
 //关键：当天卖出以后，当天还可以买入,所以算法可以直接简化为只要今天比昨天大，就卖出。
 + (void)bestTimeToBuyandSellStockII {
-    NSArray *stock = @[@6, @7, @3, @4, @8, @5, @9];
+//    NSArray *stock = @[@6, @7, @3, @4, @8, @5, @9];
+    NSArray *stock = @[@7, @1, @5, @3, @2, @6, @4];
     NSInteger max = [self bestTimeToBuyandSellStockII:stock];
     NSLog(@"----> %s, stock = %@ -- max = %ld",__FUNCTION__,stock,max);
 }

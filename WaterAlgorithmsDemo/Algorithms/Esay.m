@@ -861,6 +861,11 @@
     NSString *s1 = @"add";
     BOOL res1 = [self isomorphicStrings:t1 s:s1];
     NSAssert(!res1, @"--->%s, %@ not isomorphic %@",__FUNCTION__,s1,t1);
+    
+    NSString *t2 = @"paper";
+    NSString *s2 = @"title";
+    BOOL res2 = [self isomorphicStrings:t2 s:s2];
+    NSAssert(res2, @"--->%s, %@ isomorphic %@",__FUNCTION__,s2,t2);
 }
 
 + (BOOL)isomorphicStrings:(NSString *)t s:(NSString *)s {
@@ -957,6 +962,8 @@
         }
     }
     
+    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
+    root = [TreeNode createBinaryTreeNode:numbers];
     NSArray *result = [self binaryTreePaths:root];
     NSLog(@"---->%s nodeTree = %@ \n path = %@",__FUNCTION__,root.description,result);
 }
@@ -969,7 +976,11 @@
 }
 
 + (void)dfs:(TreeNode *)node path:(NSMutableString *)path paths:(NSMutableArray *)paths{
-    [self appendToPath:path node:node];
+    if(path.length > 0){
+        [path appendString:@"->"];
+    }
+    [path appendString:[node valString]];
+//    [self appendToPath:path node:node];
     if(node.left == nil && node.right == nil){//找到叶子
         [paths addObject:path];
         return;
@@ -995,10 +1006,11 @@
     [path appendString:[node valString]];
 }
 + (void)binaryTreeMaxDepth {
-    NSArray *numbers1 = @[@5,@1,@4,[NSNull null],[NSNull null],@3,@6];
-    TreeNode *root1 = [TreeNode createBinaryTreeNode:numbers1];
+//    NSArray *numbers = @[@5,@1,@4,[NSNull null],[NSNull null],@3,@6];
+    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
+    TreeNode *root1 = [TreeNode createBinaryTreeNode:numbers];
     NSInteger depth = [self maxDepth:root1];
-    NSLog(@"---> %s tree = %@, depth is %ld",__FUNCTION__,numbers1,depth);
+    NSLog(@"---> %s tree = %@, depth is %ld",__FUNCTION__,numbers,depth);
 
 }
 + (NSInteger)maxDepth:(TreeNode *)binaryTree {
@@ -1011,7 +1023,8 @@
 
 + (void)levelOrderBinaryTree {
 //    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7];
-    NSArray *numbers = @[@3,@9,@20,[NSNull null],[NSNull null],@15,@7];
+//    NSArray *numbers = @[@3,@9,@20,[NSNull null],[NSNull null],@15,@7];
+    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
     NSArray *result = [self levelOrderBinaryTree:root];
     NSLog(@"---> %s , tree = %@, level order = %@",__FUNCTION__,numbers,result);
@@ -1037,6 +1050,7 @@
             }
         }
         [resultArray addObject:level];
+//        [resultArray insertObject:level atIndex:0]; // 从下往上遍历
     }
     
     return [resultArray copy];
@@ -1055,15 +1069,19 @@
     if(tree) {
         [nodeStack push:tree];
     }
+    int maxDepth = 1;
+    int curDepth = 1;
     while(!nodeStack.isEmpty) {
         TreeNode *node = [nodeStack pop];
         [result addObject:@(node.val)];
-        
         if(node.right) {
             [nodeStack push:node.right];
         }
         if (node.left) {
             [nodeStack push:node.left];
+        }
+        if (!node.left && node.right) {
+            maxDepth = MAX(maxDepth, curDepth);
         }
     }
     return [result copy];
@@ -1192,7 +1210,7 @@
 //你是一个专业的强盗，计划在街上抢劫房屋。每个房子都有一定数量的钱存在，阻止你抢劫他们的唯一限制是相邻的房屋有连接的安全系统，如果两个相邻的房子在同一个晚上被打破，它将自动联系警察。
 //
 //给出一个代表每个房子的金额的非负整数列表，确定今晚可以抢劫的最大金额而不警告警察。
-//* Primary idea: Dynamic Programming, dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]) o(n) o(1)
+//* Primary idea: Dynamic Programming, dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])  space o(n) o(1)
 + (void)houseRobber {
     int array[] = {6,5,3,9,1,8,7,2,4,10,13,2};
     //申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列
@@ -1227,6 +1245,7 @@
     int current = 0;
     for (int i = 0;i<len;i++) {
         current = MAX(array[i] + preprev, prev);
+        NSLog(@"----> current = %ld", current);
         preprev = prev;
         prev = current;
     }
@@ -1261,7 +1280,7 @@
 //* Primary idea: Dynamic Programming, dp[i] = min(dp[i - 1], dp[i - 2]) + nums[i]  ,  但是要保证最后走到了顶部
 + (void)minCostClimbingStair {
 //    int array[] = {10, 15, 20};
-    int array[] = {1, 100,40,100, 1, 1, 1, 100, 1, 1, 100, 1};
+    int array[] = {1, 100,40,100, 1, 1, 1, 1, 100, 1, 1, 100, 1,1};
     int minCost = [self minCostClimbingStair:array len:sizeof(array)/sizeof(array[0])];
     NSLog(@"---> %s,minCost = %d",__FUNCTION__, minCost);
     
@@ -1282,7 +1301,7 @@
     result[1] = array[1];
     for (int i=2; i<=len; i++) {
         if(i == len) {
-            result[len] = MIN(result[i-1], result[i-2]);
+            result[len] = MIN(result[i-1], result[i-2] + array[i-1]);
         }else {
             result[i] = MIN(result[i-1], result[i-2]) + array[i];
         }

@@ -147,6 +147,11 @@ NS_ASSUME_NONNULL_BEGIN
 //判断两个字符是否同构
 + (void)isomorphicStrings;
 //同字母异序 判断
+/**
+* Question Link: https://leetcode.com/problems/valid-anagram/
+* Primary idea: Transfer string to char array and sort, compare the sort one
+* Time Complexity: O(nlogn), Space Complexity: O(1)
+*/
 + (void)validAnagram;
 //-----------------tree-------------------
 
@@ -228,7 +233,7 @@ NS_ASSUME_NONNULL_BEGIN
 //和houseRobber不同的是房子是环形的，也就是说首尾不能一起偷
     
 + (void)houseRobberII;
-//最低成本走到楼梯顶部，可以依次走一两步
+//最低成本走到楼梯顶部，可以依次走一步或两步
 + (void)minCostClimbingStair;
 //股票买卖最大利润 ，买入要早于卖出, 一次交易 只买卖一次
 // https://leetcode.com/problems/best-time-to-buy-and-sell-stock/

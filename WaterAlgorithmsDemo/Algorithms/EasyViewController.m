@@ -126,7 +126,7 @@ __weak id reference = nil;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return self.sectionSource[section];
+    return [NSString stringWithFormat:@" %@ - 共 %ld 道", self.sectionSource[section], self.dataSource[section].count] ;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 30;

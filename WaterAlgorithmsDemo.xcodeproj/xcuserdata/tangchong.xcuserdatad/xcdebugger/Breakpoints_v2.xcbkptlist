@@ -15,9 +15,9 @@
             timestampString = "584377072.7471139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "866"
-            endingLineNumber = "866"
-            landmarkName = "+isomorphicStrings"
+            startingLineNumber = "871"
+            endingLineNumber = "871"
+            landmarkName = "+wordPattern:word:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -32,77 +32,42 @@
             timestampString = "584377072.747182"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "871"
-            endingLineNumber = "871"
-            landmarkName = "+isomorphicStrings:s:"
+            startingLineNumber = "876"
+            endingLineNumber = "876"
+            landmarkName = "+wordPattern:word:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EEBF201D-99D7-473D-870B-0257AA3BB9B4"
+            uuid = "F875C6C5-F33D-4FE4-AAD1-14F6FEA87E2B"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "584377072.747228"
+            filePath = "WaterAlgorithmsDemo/Algorithms/Father.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
-            landmarkName = "+resolveClassMethod:"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "-work"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A7AE9753-ED94-4730-BF20-2A2BC8A68C34"
+            uuid = "50A585DB-2DDD-45D7-A1E6-191CB87C7F80"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "584377072.747269"
+            filePath = "WaterAlgorithmsDemo/Algorithms/Son.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
-            landmarkName = "+resolveClassMethod:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EB1451E1-C118-46BB-94E8-FDF6BF56621C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            timestampString = "584377072.747308"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "+resolveInstanceMethod:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "17CEE54A-C4D7-4921-B9CA-0A15B7253238"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WaterAlgorithmsDemo/Algorithms/Esay.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1053"
-            endingLineNumber = "1053"
-            landmarkName = "+levelOrderBinaryTree:"
-            landmarkType = "7">
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "best_Swizzle(cls, oriSel, ovrriSel)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

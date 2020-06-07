@@ -13,6 +13,7 @@
 #import <pthread.h>
 #import "TreeNode.h"
 #import <malloc/malloc.h>
+#import "Son.h"
 
 static char TestdynamicKey;
 @interface iOSTestViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -20,7 +21,7 @@ static char TestdynamicKey;
 @property (nonatomic, strong) NSArray<NSDictionary *> *dataSoource;
 //atomic VS noatomic
 @property (atomic, assign) BOOL atomicVal;
-@property (atomic, assign) BOOL noatomicVal;
+@property (nonatomic, assign) BOOL noatomicVal;
 
 //test dynamic
 @property (nonatomic, copy) NSString *dynamicObj;
@@ -51,6 +52,7 @@ static char TestdynamicKey;
     if (_dataSoource == nil) {
         _dataSoource = @[
                          @{@"name":@"atomic VS noatomic",@"function":@"atomicVSnoatomic"},
+                         @{@"name":@"testSwizzle",@"function":@"testSwizzle"},
                          @{@"name":@"unsafe_unretain __weak",@"function":@"unsafeUnRetain"},
                          @{@"name":@"TestCallTrack",@"function":@"TestCallTrack"},
                          @{@"name":@"processPrint",@"function":@"processPrint"},
@@ -99,6 +101,7 @@ static char TestdynamicKey;
     
     
     NSObject *list = [[NodeList alloc] init];
+    Class listCls = object_getClass(list);
     NSLog(@"list对象实际需要的内存大小: %zd", class_getInstanceSize([list class]));
     NSLog(@"list对象实际分配的内存大小: %zd", malloc_size((__bridge const void *)(list)));
 //    [self testInvocation];
@@ -165,6 +168,14 @@ static char TestdynamicKey;
     [self performSelector:function];
 }
 
+- (void)testSwizzle {
+//    Father *f = [[Father alloc] init];
+//    [f work];
+//
+    
+    Son *s = [[Son alloc] init];
+    [s work];
+}
 
 - (void)unsafeUnRetain {
 //    id __weak obj1 = nil;
@@ -298,6 +309,7 @@ static char TestdynamicKey;
     for (int i=0;i<10 ;i++) {
         dispatch_async(queueA, ^{
             weakSelf.noatomicVal = YES;
+            weakSelf.atomicVal = YES;
             NSLog(@"----> A [NSRunLoop currentRunLoop] = %p",[NSRunLoop currentRunLoop]);
             NSLog(@"----> A [NSThread currentThread] = %p",[NSThread currentThread]);
         });
@@ -307,6 +319,7 @@ static char TestdynamicKey;
     for (int i=0;i<10 ;i++) {
         dispatch_async(ququeB, ^{
             weakSelf.noatomicVal = NO;
+            weakSelf.atomicVal = NO;
             NSLog(@"----> B [NSRunLoop currentRunLoop] = %p",[NSRunLoop currentRunLoop]);
             NSLog(@"----> B [NSThread currentThread] = %p",[NSThread currentThread]);
         });
@@ -316,7 +329,7 @@ static char TestdynamicKey;
     for (int i=0;i<10 ;i++) {
         dispatch_async(ququeC, ^{
             NSLog(@"----> C [NSThread currentThread] = %p",[NSThread currentThread]);
-            NSLog(@"----> C [NSRunLoop currentRunLoop] = %p \n\r noatomicVal = %@",[NSRunLoop currentRunLoop],weakSelf.noatomicVal ? @"YES" : @"NO");
+            NSLog(@"----> C [NSRunLoop currentRunLoop] = %p \n\r noatomicVal = %@  atomicVal = %@",[NSRunLoop currentRunLoop],weakSelf.noatomicVal ? @"YES" : @"NO",weakSelf.atomicVal ? @"YES" : @"NO");
         });
     }
 }
@@ -595,6 +608,17 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 //    dispatch_async(queue, ^{
 //        NSLog(@"2---%@ %s", [NSThread currentThread],__FUNCTION__);
 //    });
+    
+        dispatch_sync(queue, ^{
+            NSLog(@"sync 1---%@ %s", [NSThread currentThread],__FUNCTION__);
+        });
+        dispatch_sync(queue, ^{
+            NSLog(@"sync 2---%@ %s", [NSThread currentThread],__FUNCTION__);
+        });
+        dispatch_sync(queue, ^{
+            NSLog(@"sync 3---%@ %s", [NSThread currentThread],__FUNCTION__);
+        });
+    
     dispatch_async(queue, ^{
         NSLog(@"3---%@ %s", [NSThread currentThread],__FUNCTION__);
     });

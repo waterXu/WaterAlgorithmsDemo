@@ -26,6 +26,8 @@
 		E73EC91E22D499B900043622 /* testGcc.c in Sources */ = {isa = PBXBuildFile; fileRef = E73EC91D22D499B900043622 /* testGcc.c */; };
 		E74F763022B5465600A4A70A /* iOSTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F762F22B5465600A4A70A /* iOSTestViewController.m */; };
 		E74F763322BD230E00A4A70A /* TestClang.m in Sources */ = {isa = PBXBuildFile; fileRef = E74F763222BD230E00A4A70A /* TestClang.m */; };
+		E7DE65E4248CE96600929FEC /* Father.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DE65E3248CE96600929FEC /* Father.m */; };
+		E7DE65E7248CE97600929FEC /* Son.m in Sources */ = {isa = PBXBuildFile; fileRef = E7DE65E6248CE97600929FEC /* Son.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +107,10 @@
 		E74F762F22B5465600A4A70A /* iOSTestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTestViewController.m; sourceTree = "<group>"; };
 		E74F763122BD230E00A4A70A /* TestClang.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestClang.h; sourceTree = "<group>"; };
 		E74F763222BD230E00A4A70A /* TestClang.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestClang.m; sourceTree = "<group>"; };
+		E7DE65E2248CE96600929FEC /* Father.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Father.h; sourceTree = "<group>"; };
+		E7DE65E3248CE96600929FEC /* Father.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Father.m; sourceTree = "<group>"; };
+		E7DE65E5248CE97600929FEC /* Son.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Son.h; sourceTree = "<group>"; };
+		E7DE65E6248CE97600929FEC /* Son.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Son.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +174,10 @@
 				5B63589622902AB2003A21B6 /* TreeNode.m */,
 				E74F763122BD230E00A4A70A /* TestClang.h */,
 				E74F763222BD230E00A4A70A /* TestClang.m */,
+				E7DE65E2248CE96600929FEC /* Father.h */,
+				E7DE65E3248CE96600929FEC /* Father.m */,
+				E7DE65E5248CE97600929FEC /* Son.h */,
+				E7DE65E6248CE97600929FEC /* Son.m */,
 			);
 			path = Algorithms;
 			sourceTree = "<group>";
@@ -399,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7DE65E7248CE97600929FEC /* Son.m in Sources */,
 				5B4CD8C72283322300C33CF9 /* EasyViewController.m in Sources */,
 				5BD3E09820A1E4A7008ACFD2 /* ViewController.m in Sources */,
 				5BD3E0A320A1E4A8008ACFD2 /* main.m in Sources */,
@@ -406,6 +417,7 @@
 				5B4CD8CA2283330200C33CF9 /* Esay.m in Sources */,
 				5B7567002287ECFD0044D317 /* Medium.m in Sources */,
 				5BD3E0CB20A2F526008ACFD2 /* TestNavBarViewController.m in Sources */,
+				E7DE65E4248CE96600929FEC /* Father.m in Sources */,
 				5BD3E09520A1E4A7008ACFD2 /* AppDelegate.m in Sources */,
 				5B7566FD2287ECE90044D317 /* MediumViewController.m in Sources */,
 				E74F763022B5465600A4A70A /* iOSTestViewController.m in Sources */,

@@ -109,6 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)quickSortArray;
 //二分搜索
 + (void)binarySearchArray;
+// 最大子序列
++ (void)maxSubArray;
 // -----------String------------
 //正反读都一样
 /**

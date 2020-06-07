@@ -26,7 +26,10 @@
 @interface NodeList : NSObject
 @property(nonatomic, strong) NodeList *next;
 @property(nonatomic, assign) NSInteger val;
+//@property(nonatomic, assign) NSInteger vals;
+//@property(nonatomic, assign) NSInteger valss;
 - (instancetype)initWithValue:(NSInteger)value;
+//- (instancetype)initWithValues:(NSInteger)value;
 @end
 
 @interface Queue : NSObject

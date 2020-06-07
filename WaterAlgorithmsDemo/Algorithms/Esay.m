@@ -706,6 +706,31 @@
     }
 }
 
+// 最大子序列
++ (void)maxSubArray {
+    
+    NSArray *array = @[@1,@3,@4,@5,@7,@-1,@5,@13,@0,@-3,@19,@12,@-1,@-3,@13];
+    NSMutableArray *resultArray = [NSMutableArray array];
+    NSMutableArray *tempArr = [NSMutableArray array];
+    int add = 0;
+    int maxadd = 0;
+    for (int i = 0; i<array.count; i++) {
+        int current = [array[i] intValue];
+        add = add + current;
+        if(add > maxadd) {
+            maxadd = add;
+            [tempArr addObject:array[i]];
+            resultArray = [tempArr mutableCopy];
+        } else if (current <= 0){//重新计算
+            [tempArr removeAllObjects];
+            add = 0;
+        } else {
+            [tempArr addObject:array[i]];
+        }
+    }
+    NSLog(@"----> %s array = %@",__FUNCTION__,array);
+    NSLog(@"----> %s find resultArray = %@",__FUNCTION__,resultArray);
+}
 
 #pragma mark - String
 //----------String------------
@@ -1028,6 +1053,9 @@
     TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
     NSArray *result = [self levelOrderBinaryTree:root];
     NSLog(@"---> %s , tree = %@, level order = %@",__FUNCTION__,numbers,result);
+    
+    NSArray *rightReslut = [self rightViewBinaryTree:root];
+    NSLog(@"---> %s , rightReslut = %@",__FUNCTION__,rightReslut);
 }
 + (NSArray *)levelOrderBinaryTree:(TreeNode *)tree {
     NSMutableArray *resultArray = [NSMutableArray array];
@@ -1055,6 +1083,41 @@
     
     return [resultArray copy];
 }
+// 右边视角树
++ (void)rightViewTree {
+//    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7];
+//    NSArray *numbers = @[@3,@9,@20,[NSNull null],[NSNull null],@15,@7];
+    NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];
+    TreeNode *root = [TreeNode createBinaryTreeNode:numbers];
+    NSArray *result = [self levelOrderBinaryTree:root];
+    NSLog(@"---> %s , tree = %@, level order = %@",__FUNCTION__,numbers,result);
+}
++ (NSArray *)rightViewBinaryTree:(TreeNode *)tree {
+    NSMutableArray *resultArray = [NSMutableArray array];
+    
+    Queue *queue = [[Queue alloc] init];
+    if(tree) {
+        [queue enqueue:tree];
+    }
+    while (queue.size) {
+        NSInteger size = queue.size;
+        for (int i = 0; i<size; i++) {
+            TreeNode *node = [queue dequeue];
+            if(node.left){
+                [queue enqueue:node.left];
+            }
+            if(node.right) {
+                [queue enqueue:node.right];
+            }
+            if (size == (i+1)) {
+                [resultArray addObject:@(node.val)];
+            }
+        }
+    }
+    
+    return [resultArray copy];
+}
+
 //使用栈，右子树先进，左子树再进入，每次出栈一个节点
 + (void)DFSBinaryTree {
     NSArray *numbers = @[@5,@3,@6,@1,@4,@3,@7,@10,@13];

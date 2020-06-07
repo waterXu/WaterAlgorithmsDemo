@@ -49,6 +49,7 @@
                          @{@"name":@"sortMergeArray",@"function":@"sortMergeArray"},
                          @{@"name":@"quickSortArray",@"function":@"quickSortArray"},
                          @{@"name":@"binarySearchArray 二分搜索",@"function":@"binarySearchArray"},
+                         @{@"name":@"最大字序列",@"function":@"maxSubArray"},
                          ],
                          //String
                          @[

@@ -175,6 +175,9 @@ static char TestdynamicKey;
     
     Son *s = [[Son alloc] init];
     [s work];
+    
+    NSDictionary* dict = [[NSNull alloc] init];
+    [dict objectForKey:@"123"];
 }
 
 - (void)unsafeUnRetain {

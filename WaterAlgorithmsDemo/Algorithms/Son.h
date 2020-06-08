@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Son : Father
-
+@property(nonatomic, strong) NSString *sonStr;
 @end
 
 NS_ASSUME_NONNULL_END

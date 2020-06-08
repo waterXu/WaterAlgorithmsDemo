@@ -53,6 +53,8 @@ static char TestdynamicKey;
         _dataSoource = @[
                          @{@"name":@"atomic VS noatomic",@"function":@"atomicVSnoatomic"},
                          @{@"name":@"testSwizzle",@"function":@"testSwizzle"},
+                         @{@"name":@"testPThread",@"function":@"testPThread"},
+                         @{@"name":@"testIvar",@"function":@"testIvar"},
                          @{@"name":@"unsafe_unretain __weak",@"function":@"unsafeUnRetain"},
                          @{@"name":@"TestCallTrack",@"function":@"TestCallTrack"},
                          @{@"name":@"processPrint",@"function":@"processPrint"},
@@ -169,15 +171,80 @@ static char TestdynamicKey;
 }
 
 - (void)testSwizzle {
+    
+    //测试safe null
+    NSDictionary* dict = [[NSNull alloc] init];
+    [dict objectForKey:@"123"];
+    
 //    Father *f = [[Father alloc] init];
 //    [f work];
 //
     
     Son *s = [[Son alloc] init];
     [s work];
+}
+
+- (void)testIvar {
     
-    NSDictionary* dict = [[NSNull alloc] init];
-    [dict objectForKey:@"123"];
+    Son *s = [[Son alloc] init];
+
+    NSLog(@"%p",s);
+    //
+    NSLog(@"%p",[s class]);
+    NSLog(@"%p",[Son class]);
+    //
+    NSLog(@"%p",object_getClass(s));
+    NSLog(@"%p",object_getClass([s class]));
+    Ivar ivar = class_getInstanceVariable([Son class], [@"_sonStr" UTF8String]);
+    Ivar ivar2 = class_getInstanceVariable(class_getSuperclass([s class]), [@"_fatherStr" UTF8String]);
+    Ivar ivar3 = class_getClassVariable(class_getSuperclass([s class]), [@"_fatherStr" UTF8String]);
+
+    SEL aSel = @selector(didReceiveMemoryWarning);
+    SEL a_sel = NSSelectorFromString(@"didReceiveMemoryWarning");
+    SEL a_Sel = sel_registerName("didReceiveMemoryWarning");
+    NSLog(@"%p___%p___%p",aSel,a_sel,a_Sel);
+    NSLog(@"-------");
+}
+
+- (void)testPThread {
+    pthread_t thread = NULL;
+    NSString *params = @"Hello World";
+    int result = pthread_create(&thread, NULL, threadTask, (__bridge void *)(params));
+    result == 0 ? NSLog(@"creat thread success") : NSLog(@"creat thread failure");
+    //设置子线程的状态设置为detached,则该线程运行结束后会自动释放所有资源
+    pthread_detach(thread);
+    [self loadImageWithMultiThread];
+}
+
+-(void)loadImageWithMultiThread{
+    //方法1：使用对象方法
+    NSThread *thread=[[NSThread alloc]initWithTarget:self selector:@selector(loadImage) object:nil];
+//    ⚠️启动一个线程并非就一定立即执行，而是处于就绪状态，当CUP调度时才真正执行
+    [thread start];
+    
+    //方法2：使用类方法
+//    [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
+}
+
+-(void)loadImage{
+    NSURL *imageUrl = [NSURL URLWithString:@"https://www.baidu.com/img/flexible/logo/pc/result@2.png"];
+    NSData *imageData = [NSData dataWithContentsOfURL:imageUrl];
+    //必须在主线程更新UI，Object：代表调用方法的参数,不过只能传递一个参数(如果有多个参数请使用对象进行封装)，waitUntilDone:是否线程任务完成执行
+//    [self performSelectorOnMainThread:@selector(updateImageData:) withObject:imageData waitUntilDone:YES];
+//
+    UIImage *image = [UIImage imageWithData:imageData];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 100, 200)];
+        [self.view addSubview:imageview];
+        imageview.image = image;
+    });
+}
+
+
+
+void *threadTask(void *params) {
+    NSLog(@"%@ - %@", [NSThread currentThread], (__bridge NSString *)(params));
+    return NULL;
 }
 
 - (void)unsafeUnRetain {

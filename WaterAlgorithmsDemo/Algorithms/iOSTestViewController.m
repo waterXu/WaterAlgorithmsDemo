@@ -74,6 +74,8 @@ static char TestdynamicKey;
                          @{@"name":@"serialQueueSync 串行同步",@"function":@"serialQueueSync"},
                          @{@"name":@"serialQueueAsyncAddSync 串行异步嵌套同步",@"function":@"serialQueueAsyncAddSync"},
                          @{@"name":@"serialQueueSyncAddAsync 串行同步嵌套异步",@"function":@"serialQueueSyncAddAsync"},
+                         @{@"name":@"testDelayAfter",@"function":@"testDelayAfter"},
+                         @{@"name":@"常驻线程",@"function":@"threadWake"},
                          @{@"name":@"优先倒置",@"function":@"priorityInverstion"},
                          @{@"name":@"锁 - osspinlink",@"function":@"osspinlink"},
                          @{@"name":@"锁 - dispatch_semaphore",@"function":@"dispatchSemaphore"},
@@ -182,6 +184,8 @@ static char TestdynamicKey;
     
     Son *s = [[Son alloc] init];
     [s work];
+    s.testVar = @"133";
+    NSLog(@"----- test Associate var = %@", s.testVar);
 }
 
 - (void)testIvar {
@@ -206,6 +210,23 @@ static char TestdynamicKey;
     NSLog(@"-------");
 }
 
+- (void)testDelayAfter {
+
+        NSThread *thread=[[NSThread alloc]initWithTarget:self selector:@selector(threadTask) object:nil];
+    //    ⚠️启动一个线程并非就一定立即执行，而是处于就绪状态，当CUP调度时才真正执行
+        [thread start];
+}
+
+- (void)threadTask {
+    //需要启动runloop才会执行after方法, 内部会生成一个timer，在时间到之后会添加到runloop中，等待执行
+    [self performSelector:@selector(delayTask) withObject:nil afterDelay:2];
+    [[NSRunLoop currentRunLoop] run];
+}
+
+- (void)delayTask {
+    NSLog(@"----- delayTask 执行");
+}
+
 - (void)testPThread {
     pthread_t thread = NULL;
     NSString *params = @"Hello World";
@@ -215,6 +236,32 @@ static char TestdynamicKey;
     pthread_detach(thread);
     [self loadImageWithMultiThread];
 }
+//常驻线程test
+
+
+- (void)threadWake {
+    NSThread *thread = [self wakeThread];
+    [self performSelector:@selector(wakethreadTask1) onThread:thread withObject:nil waitUntilDone:NO];
+}
+
+- (NSThread *)wakeThread {
+    static NSThread *thread = nil;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        thread = [[NSThread alloc] initWithTarget:self selector:@selector(wakethreadTask1) object:nil];
+        [thread setName:@"threadWake"];
+        [thread start];
+    });
+    return thread;
+}
+
+
+- (void)wakethreadTask1 {
+    [self performSelector:@selector(delayTask) withObject:nil afterDelay:2];
+//    [self performSelector:@selector(delayTask) withObject:nil ];
+    [[NSRunLoop currentRunLoop] run];
+}
+
 
 -(void)loadImageWithMultiThread{
     //方法1：使用对象方法
@@ -701,6 +748,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     NSLog(@"---start--- %s",__FUNCTION__);
     [[NSThread currentThread] setName:@"testName"];
     dispatch_async(queue, ^{
+//        sleep(1);
         NSLog(@"1---%@ %s", [NSThread currentThread],__FUNCTION__);
     });
     NSLog(@"---middle--- %s",__FUNCTION__);

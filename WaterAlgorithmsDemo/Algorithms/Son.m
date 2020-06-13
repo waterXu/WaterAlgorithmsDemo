@@ -41,4 +41,16 @@ BOOL best_Swizzle(Class cls, SEL oriSel, SEL ovrriSel){
     [self son_work];
     NSLog(@"----> son nowork");
 }
+- (void)work {
+//    [self son_work];
+    NSLog(@"----> son work");
+}
+static char testVarKey;
+- (void)setTestVar:(NSString *)testVar {
+    objc_setAssociatedObject(self, &testVarKey, testVar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)testVar {
+   return  objc_getAssociatedObject(self, &testVarKey);
+}
 @end

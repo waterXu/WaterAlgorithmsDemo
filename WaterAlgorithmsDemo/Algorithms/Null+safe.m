@@ -12,7 +12,7 @@
 #define JsonObjects @[@"",@0,@{},@[]]
 - (id)forwardingTargetForSelector:(SEL)aSelector {
     for (id jsonObj in JsonObjects) {
-        if ([jsonObj respondsToSelector:aSelector]) {
+        if ([jsonObj respondsToSelector:aSelector]) {//判断哪种结构类型有对应 sel 实现
 #ifdef pLog
             NSLog(@"NULL 了！这个对象应该是_%@",[jsonObj class]);
 #endif
